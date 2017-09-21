@@ -46,9 +46,9 @@ class MbKecamatan extends \yii\db\ActiveRecord
     {
         return [
             'mb_kecamatan_id' => 'Mb Kecamatan ID',
-            'mb_kabupaten_kota_id' => 'Mb Kabupaten Kota ID',
-            'mb_kecamatan_kode' => 'Mb Kecamatan Kode',
-            'mb_kecamatan_nama' => 'Mb Kecamatan Nama',
+            'mb_kabupaten_kota_id' => 'Kabupaten ',
+            'mb_kecamatan_kode' => 'Kode Kecamatan ',
+            'mb_kecamatan_nama' => 'Nama Kecamatan ',
         ];
     }
 
