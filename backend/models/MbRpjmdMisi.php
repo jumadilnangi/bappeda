@@ -45,10 +45,10 @@ class MbRpjmdMisi extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rpjmd_misi_id' => 'Mb Rpjmd Misi ID',
-            'mb_rpjmd_visi_id' => 'Mb Rpjmd Visi ID',
-            'mb_rpjmd_misi_isi' => 'Mb Rpjmd Misi Isi',
-            'mb_rpjmd_misi_ket' => 'Mb Rpjmd Misi Ket',
+            'mb_rpjmd_misi_id' => 'Misi ',
+            'mb_rpjmd_visi_id' => 'Visi ',
+            'mb_rpjmd_misi_isi' => 'Visi',
+            'mb_rpjmd_misi_ket' => 'Keterangan',
         ];
     }
 

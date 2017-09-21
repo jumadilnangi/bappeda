@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\select2\Select2;
-use backend\models\MbRpjmdVisi;
-use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbRpjmdMisi */
@@ -15,22 +12,7 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-  
-    
-    <?= $form->field($model, 'mb_rpjmd_visi_id')->widget(Select2::classname(), [
-        
-        
-        'data' => ArrayHelper::map(MbRpjmdVisi::find()->all(),'mb_rpjmd_visi_id','mb_rpjmd_visi_isi'),
-        'language' => 'en',
-       // 'tabindex' => false,
-        'options' => ['placeholder' => 'Pilih Visi'],
-        'pluginOptions' => [
-            'allowClear' => true
-            ],
-        ]);
-  
-    ?>
-    
+    <?= $form->field($model, 'mb_rpjmd_visi_id')->textInput() ?>
 
     <?= $form->field($model, 'mb_rpjmd_misi_isi')->textarea(['rows' => 6]) ?>
 

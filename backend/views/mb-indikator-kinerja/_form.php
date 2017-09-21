@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use backend\models\MbRpjmdSasaran;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbIndikatorKinerja */
@@ -12,7 +15,22 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'mb_rpjmd_sasaran_id')->textInput() ?>
+   
+    
+    
+    <?= $form->field($model, 'mb_rpjmd_sasaran_id')->widget(Select2::classname(), [
+        
+        
+        'data' => ArrayHelper::map(MbRpjmdSasaran::find()->all(),'mb_rpjmd_sasaran_id','mb_sasaran_isi'),
+        'language' => 'en',
+       // 'tabindex' => false,
+        'options' => ['placeholder' => 'Pilih Sasaran'],
+        'pluginOptions' => [
+            'allowClear' => true
+            ],
+        ]);
+  
+    ?>
 
     <?= $form->field($model, 'mb_indikator_kinerja_isi')->textarea(['rows' => 6]) ?>
 

@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use backend\models\MbRpjmdTujuan;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbRpjmdSasaran */
@@ -12,7 +15,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'mb_rpjmd_tujuan_id')->textInput() ?>
+  
+    
+    <?= $form->field($model, 'mb_rpjmd_tujuan_id')->widget(Select2::classname(), [
+        
+        
+        'data' => ArrayHelper::map(MbRpjmdTujuan::find()->all(),'mb_rpjmd_tujuan_id','mb_tujuan_isi'),
+        'language' => 'en',
+       // 'tabindex' => false,
+        'options' => ['placeholder' => 'Pilih Tujuan'],
+        'pluginOptions' => [
+            'allowClear' => true
+            ],
+        ]);
+  
+    ?>
 
     <?= $form->field($model, 'mb_sasaran_isi')->textarea(['rows' => 6]) ?>
 

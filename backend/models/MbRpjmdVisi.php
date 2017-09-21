@@ -43,11 +43,11 @@ class MbRpjmdVisi extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rpjmd_visi_id' => 'Mb Rpjmd Visi ID',
-            'mb_rpjmd_visi_isi' => 'Mb Rpjmd Visi Isi',
-            'mb_rpjmd_visi_awal' => 'Mb Rpjmd Visi Awal',
-            'mb_rpjmd_visi_akhir' => 'Mb Rpjmd Visi Akhir',
-            'mb_rpjmd_visi_ket' => 'Mb Rpjmd Visi Ket',
+            'mb_rpjmd_visi_id' => 'ID Visi ',
+            'mb_rpjmd_visi_isi' => 'Visi',
+            'mb_rpjmd_visi_awal' => 'Tahun Awal',
+            'mb_rpjmd_visi_akhir' => 'Tahun Akhir',
+            'mb_rpjmd_visi_ket' => 'Keterangan',
         ];
     }
 

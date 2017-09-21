@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\MbRpjmdTujuanSearch */
@@ -15,9 +18,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Mb Rpjmd Tujuan', ['create'], ['class' => 'btn btn-success']) ?>
+     <p>
+        <?= Html::button('Tambah Tujuan', ['value' => Url::to('index.php?r=mb-rpjmd-tujuan/create'), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
     </p>
+    
+     <?php 
+        Modal::begin([
+            'header' => '<h4>Form Isian Tujuan</h4>',
+            'id' => 'modal',
+            'size' => 'modal-lg',
+            'options' => [
+            'tabindex' => false
+            ],
+        ]);
+        echo "<div id='modalContent'> </div>";
+        Modal::end();
+    ?>
+    
+    <?php    Pjax::begin(); ?>
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -25,11 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'mb_rpjmd_tujuan_id',
-            'mb_rpjmd_misi_id',
+            'mbRpjmdMisi.mb_rpjmd_misi_isi',
             'mb_tujuan_isi:ntext',
             'mb_tujuan_ket',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    
+        <?php    Pjax::end(); ?>
 </div>
