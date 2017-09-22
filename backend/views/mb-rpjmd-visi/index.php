@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
    
     
     <p>
-        <?= Html::button('Tambah Visi', ['value' => Url::to('index.php?r=mb-rpjmd-visi/create'), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
+        <?= Html::button('Tambah Visi', ['value' => Url::to(['create']), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
     </p>
     
      <?php 

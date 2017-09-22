@@ -65,10 +65,42 @@ class MbSkpdHasRekeningRincianController extends Controller
     {
         $model = new MbSkpdHasRekeningRincian();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]);
         } else {
             return $this->renderAjax('create', [
+                'model' => $model,
+            ]);
+        }*/
+        /*if ($model->load(Yii::$app->request->post())) {
+            echo "<pre>";
+            print_r(Yii::$app->request->post());
+            echo "</pre>";
+        } else {
+            return $this->renderAjax('create', [
+                'model' => $model,
+            ]);
+        }*/
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                    return $this->redirect(['index']);
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                    return $this->redirect(['index']);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+                return $this->redirect(['index']);
+            }
+            //return $this->redirect(['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]);
+        } else {
+            return $this->render('create', [
                 'model' => $model,
             ]);
         }
@@ -84,8 +116,30 @@ class MbSkpdHasRekeningRincianController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }*/
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil dirubah');
+                    return $this->redirect(['index']);
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa dirubah');
+                    return $this->redirect(['index']);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa dirubah');
+                return $this->redirect(['index']);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -104,6 +158,24 @@ class MbSkpdHasRekeningRincianController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDetailanggaran()
+    {
+        $id = Yii::$app->request->post('expandRowKey');
+        //$id = 1;
+        $model = $this->findModel($id);
+        //print_r($model);
+        //if ($model) {
+        //    echo "Data ditemukan";
+        //} else {
+        //    echo "Data tidak ditemukan";
+        //}
+
+        return $this->renderPartial('_detailhasrekeningrincian', [
+            'model' => $model
+        ]);
+        //echo $id;
     }
 
     /**
