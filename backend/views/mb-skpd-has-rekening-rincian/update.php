@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Data Penyusunan Anggaran', 'url' =
 //$this->params['breadcrumbs'][] = ['label' => $model->mb_skpd_has_rekening_rincian_id, 'url' => ['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]];
 $this->params['breadcrumbs'][] = 'Update';
 
-echo $this->render('_form', [
+echo $this->render('_formUpdate', [
 	'model' => $model,
 ]); 
 ?>

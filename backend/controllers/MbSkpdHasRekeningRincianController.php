@@ -3,11 +3,22 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\MbSkpdHasRekeningRincian;
-use backend\models\MbSkpdHasRekeningRincianSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\Json;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
+use backend\models\MbSkpdHasRekeningRincian;
+use backend\models\MbSkpdHasRekeningRincianSearch;
+
+use backend\models\customs\RekeningStruk;
+use backend\models\customs\RekeningKelompok;
+use backend\models\customs\RekeningJenis;
+use backend\models\customs\RekeningObyek;
+use backend\models\customs\RekeningRinci;
+use backend\models\customs\Urusan;
+use backend\models\customs\UrusanHasSkpd;
 
 /**
  * MbSkpdHasRekeningRincianController implements the CRUD actions for MbSkpdHasRekeningRincian model.
@@ -20,10 +31,26 @@ class MbSkpdHasRekeningRincianController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 
+                            'create', 'update', 'delete', 
+                            'detailanggaran', 'suburusan',
+                            'substruk', 'subkelompok',
+                            'subobyek', 'subrekening'
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'detailanggaran' => ['POST']
                 ],
             ],
         ];
@@ -64,24 +91,16 @@ class MbSkpdHasRekeningRincianController extends Controller
     public function actionCreate()
     {
         $model = new MbSkpdHasRekeningRincian();
+        $modelStruk = new RekeningStruk();
+        $modelUrusan = new Urusan();
+        $modelKelompok = new RekeningKelompok();
+        $modelJenis = new RekeningJenis();
+        $modelObyek = new RekeningObyek();
+        $modelRinci = new RekeningRinci();
 
-        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]);
-        } else {
-            return $this->renderAjax('create', [
-                'model' => $model,
-            ]);
-        }*/
-        /*if ($model->load(Yii::$app->request->post())) {
-            echo "<pre>";
-            print_r(Yii::$app->request->post());
-            echo "</pre>";
-        } else {
-            return $this->renderAjax('create', [
-                'model' => $model,
-            ]);
-        }*/
         if ($model->load(Yii::$app->request->post())) {
+            //var_dump($model->save());
+            //exit();
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($model->save()) {
@@ -102,6 +121,12 @@ class MbSkpdHasRekeningRincianController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'modelStruk' => $modelStruk,
+                'modelUrusan' => $modelUrusan,
+                'modelKelompok' => $modelKelompok,
+                'modelJenis' => $modelJenis,
+                'modelObyek' => $modelObyek,
+                'modelRinci' => $modelRinci
             ]);
         }
     }
@@ -165,17 +190,142 @@ class MbSkpdHasRekeningRincianController extends Controller
         $id = Yii::$app->request->post('expandRowKey');
         //$id = 1;
         $model = $this->findModel($id);
-        //print_r($model);
-        //if ($model) {
-        //    echo "Data ditemukan";
-        //} else {
-        //    echo "Data tidak ditemukan";
-        //}
 
         return $this->renderPartial('_detailhasrekeningrincian', [
             'model' => $model
         ]);
         //echo $id;
+    }
+
+    public function actionSuburusan()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getHasSkpd($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubstruk()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getKelompok($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubkelompok()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getJenis($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubobyek()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getSubobyek($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubrekening()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getSubrekening($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function getSubrekening($id='')
+    {
+        $queryKelompok = Yii::$app->db->createCommand("SELECT mb_rekening_rincian_id AS id, 
+                    CONCAT(mb_rekening_rincian_kode, ' - ', mb_rekening_rincian_nama) AS name
+                FROM mb_rekening_rincian
+                WHERE mb_rekening_obyek_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryKelompok;
+    }
+
+    public function getSubobyek($id='')
+    {
+        $queryKelompok = Yii::$app->db->createCommand("SELECT mb_rekening_obyek_id AS id, 
+                    CONCAT(mb_rekening_obyek_kode, ' - ',mb_rekening_obyek_nama) AS name
+                FROM mb_rekening_obyek
+                WHERE mb_rekening_jenis_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryKelompok;
+    }
+
+    public function getJenis($id='')
+    {
+        $queryKelompok = Yii::$app->db->createCommand("SELECT mb_rekening_jenis_id AS id, 
+                    CONCAT(mb_rekening_jenis_kode, ' - ',mb_rekening_jenis_nama) AS name
+                FROM mb_rekening_jenis
+                WHERE mb_rekening_kelompok_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryKelompok;
+    }
+
+    public function getKelompok($id='')
+    {
+        $queryKelompok = Yii::$app->db->createCommand("SELECT mb_rekening_kelompok_id AS id, 
+                    CONCAT(mb_rekening_kelompok_kode, ' - ', mb_rekening_kelompok_nama) AS name
+                FROM mb_rekening_kelompok
+                WHERE mb_rekening_struk_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryKelompok;
+    }
+
+    public function getHasSkpd($id='')
+    {
+        $querySkpd = Yii::$app->db->createCommand("SELECT 
+                    hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
+                FROM mb_urusan_has_skpd AS hs
+                JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
+                WHERE hs.mb_urusan_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $querySkpd;
     }
 
     /**

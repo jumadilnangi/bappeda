@@ -32,7 +32,7 @@ class MbUrusan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_urusan_jenis_id'], 'required'],
+            [['mb_urusan_jenis_id', ], 'required'],
             [['mb_urusan_jenis_id'], 'integer'],
             [['mb_urusan_kode', 'mb_urusan_ket'], 'string', 'max' => 45],
             [['mb_urusan_nama'], 'string', 'max' => 245],
