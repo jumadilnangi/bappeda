@@ -38,6 +38,25 @@ class DataController extends Controller
 		$this->_db = Yii::$app->db;
 	}
 
+	public function actionGetprioritas()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryStruk = $this->_db->createCommand("SELECT mb_prioritas_id AS id, 
+					mb_prioritas_nama AS text
+				FROM mb_prioritas
+				WHERE mb_prioritas_nama LIKE :cari
+				LIMIT :batas")
+			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryStruk;
+		return $out;
+	}
+
 	public function actionGetstruk()
 	{
 		\Yii::$app->response->format = Response::FORMAT_JSON;
@@ -82,6 +101,24 @@ class DataController extends Controller
 		$limit = $this->_request->post('page',10);
 		
 		$queryTa = $this->_db->createCommand("SELECT mb_tahun_anggaran_nama AS id, mb_tahun_anggaran_nama AS text 
+				FROM mb_tahun_anggaran
+				WHERE mb_tahun_anggaran_nama LIKE :cari
+				LIMIT :batas")
+			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryTa;
+		return $out;
+	}
+
+	public function actionGetidta()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryTa = $this->_db->createCommand("SELECT mb_tahun_anggaran_id AS id, mb_tahun_anggaran_nama AS text 
 				FROM mb_tahun_anggaran
 				WHERE mb_tahun_anggaran_nama LIKE :cari
 				LIMIT :batas")
