@@ -9,6 +9,7 @@ use yii\helpers\Url;
 
 use backend\models\MbSkpd;
 use backend\models\MbRekeningRincian;
+use backend\models\MbTahunAnggaran;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\MbSkpdHasRekeningRincianSearch */
@@ -72,7 +73,14 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         'attribute' => 'mb_skpd_has_rekening_rincian_ta',
                         'label' => 'Thn Anggr.',
                         'filterType' => GridView::FILTER_SELECT2,
-                        'filter'=> $ta,
+                        'filter'=> ArrayHelper::map(
+                            MbTahunAnggaran::find()
+                                ->select('mb_tahun_anggaran_id, mb_tahun_anggaran_nama')
+                                ->asArray()
+                                ->all(),
+                            'mb_tahun_anggaran_nama',
+                            'mb_tahun_anggaran_nama'
+                        ),
                         'filterWidgetOptions' => [
                             'theme' => 'bootstrap',
                             'pluginOptions' => ['allowClear'=>true],

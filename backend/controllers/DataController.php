@@ -47,9 +47,9 @@ class DataController extends Controller
 		$queryStruk = $this->_db->createCommand("SELECT mb_prioritas_id AS id, 
 					mb_prioritas_nama AS text
 				FROM mb_prioritas
-				WHERE mb_prioritas_nama LIKE :cari
+				WHERE LOWER(mb_prioritas_nama) LIKE :cari
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
@@ -66,9 +66,9 @@ class DataController extends Controller
 		$queryStruk = $this->_db->createCommand("SELECT mb_rekening_struk_id AS id,
 					CONCAT(mb_rekening_struk_kode,' - ', mb_rekening_struk_nama) AS text
 				FROM mb_rekening_struk
-				WHERE mb_rekening_struk_nama LIKE :cari
+				WHERE LOWER(mb_rekening_struk_nama) LIKE :cari
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
@@ -82,11 +82,12 @@ class DataController extends Controller
 		$cari = $this->_request->post('cari');
 		$limit = $this->_request->post('page',10);
 		
-		$queryUrus = $this->_db->createCommand("SELECT mb_urusan_id AS id, CONCAT(mb_urusan_kode,' - ', mb_urusan_nama) AS text
+		$queryUrus = $this->_db->createCommand("SELECT mb_urusan_id AS id, 
+					CONCAT(mb_urusan_kode,' - ', mb_urusan_nama) AS text
 				FROM mb_urusan
-				WHERE mb_urusan_nama LIKE :cari
+				WHERE LOWER(mb_urusan_nama) LIKE :cari
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
@@ -102,9 +103,9 @@ class DataController extends Controller
 		
 		$queryTa = $this->_db->createCommand("SELECT mb_tahun_anggaran_nama AS id, mb_tahun_anggaran_nama AS text 
 				FROM mb_tahun_anggaran
-				WHERE mb_tahun_anggaran_nama LIKE :cari
+				WHERE LOWER(mb_tahun_anggaran_nama) LIKE :cari
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
@@ -120,9 +121,9 @@ class DataController extends Controller
 		
 		$queryTa = $this->_db->createCommand("SELECT mb_tahun_anggaran_id AS id, mb_tahun_anggaran_nama AS text 
 				FROM mb_tahun_anggaran
-				WHERE mb_tahun_anggaran_nama LIKE :cari
+				WHERE LOWER(mb_tahun_anggaran_nama) LIKE :cari
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
@@ -138,9 +139,9 @@ class DataController extends Controller
 		
 		$querySkpd = $this->_db->createCommand("SELECT mb_skpd_id AS id, mb_skpd_nama AS text
 				FROM mb_skpd
-				WHERE mb_skpd_nama LIKE :cari
+				WHERE LOWER(mb_skpd_nama) LIKE :cari
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
@@ -157,10 +158,10 @@ class DataController extends Controller
 		$queryRek = $this->_db->createCommand("SELECT 
 					mb_rekening_rincian_id AS id, mb_rekening_rincian_nama AS text
 				FROM mb_rekening_rincian
-				WHERE mb_rekening_rincian_nama LIKE :cari
+				WHERE LOWER(mb_rekening_rincian_nama) LIKE :cari
 				ORDER BY mb_rekening_rincian_id
 				LIMIT :batas")
-			->bindValue(':cari', '%'.$cari.'%')
+			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 
