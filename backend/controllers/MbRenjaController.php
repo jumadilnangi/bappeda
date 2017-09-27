@@ -254,6 +254,19 @@ class MbRenjaController extends Controller
         return $querySkpd;
     }
 
+    public function actionDetailrenja()
+    {
+        $id = Yii::$app->request->post('expandRowKey');
+        //$id = 1;
+        $model = $this->findModel($id);
+        //echo "<pre>";
+        //print_r($model);
+        //echo "</pre>";
+        return $this->renderPartial('_detailrenja', [
+            'model' => $model
+        ]);
+    }
+
     /**
      * Finds the MbRenja model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -12,6 +12,7 @@ use backend\models\MbRenja;
  */
 class MbRenjaSearch extends MbRenja
 {
+    public $mb_tahun_anggaran_nama;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class MbRenjaSearch extends MbRenja
     {
         return [
             [['mb_renja_id', 'mb_tahun_anggaran_id', 'mb_kegiatan_id', 'mb_sasaran_id'], 'integer'],
-            [['mb_renja_indikator_kegiatan', 'mb_renja_indikator_keg', 'mb_renja_sasaran_keg', 'mb_renja_hasil_prog_tolak_ukur', 'mb_renja_hasil_prog_target_kerja', 'mb_renja_keluaran_tolak_ukur', 'mb_renja_keluaran_tolak_target_kerja', 'mb_renja_hasil_kerja_tolak_ukur', 'mb_renja_hasil_kerja_tolak_target_kerja', 'mb_renja_target_capaian', 'mb_renja_target_capaian_thn_maju', 'mb_renja_ket'], 'safe'],
+            [['mb_tahun_anggaran_nama', 'mb_renja_indikator_kegiatan', 'mb_renja_indikator_keg', 'mb_renja_sasaran_keg', 'mb_renja_hasil_prog_tolak_ukur', 'mb_renja_hasil_prog_target_kerja', 'mb_renja_keluaran_tolak_ukur', 'mb_renja_keluaran_tolak_target_kerja', 'mb_renja_hasil_kerja_tolak_ukur', 'mb_renja_hasil_kerja_tolak_target_kerja', 'mb_renja_target_capaian', 'mb_renja_target_capaian_thn_maju', 'mb_renja_ket'], 'safe'],
             [['mb_renja_pagu_indikatif'], 'number'],
         ];
     }
@@ -44,6 +45,8 @@ class MbRenjaSearch extends MbRenja
     {
         $query = MbRenja::find();
 
+        $query->joinWith('mbTahunAnggaran');
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -65,6 +68,7 @@ class MbRenjaSearch extends MbRenja
             'mb_kegiatan_id' => $this->mb_kegiatan_id,
             'mb_sasaran_id' => $this->mb_sasaran_id,
             'mb_renja_pagu_indikatif' => $this->mb_renja_pagu_indikatif,
+            'mb_tahun_anggaran_nama' => $this->mb_tahun_anggaran_nama,
         ]);
 
         $query->andFilterWhere(['like', 'mb_renja_indikator_kegiatan', $this->mb_renja_indikator_kegiatan])
