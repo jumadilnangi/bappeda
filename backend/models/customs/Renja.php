@@ -31,4 +31,9 @@ class Renja extends MbRenja
 			'mb_renja_ket' => 'Keterangan',
 		];
 	}
+
+	public function getMbKegiatan()
+	{
+		return $this->hasOne(Kegiatan::className(), ['mb_kegiatan_id' => 'mb_kegiatan_id']);
+	}
 }

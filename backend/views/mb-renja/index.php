@@ -40,8 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'expandIcon' => '<i class="fa fa-caret-right"></i>',
                     'collapseIcon' => '<i class="fa fa-caret-down"></i>',
                 ],
-               // 'mb_renja_id',
-                //'mbTahunAnggaran.mb_tahun_anggaran_nama',
+                // 'mb_renja_id',
+                // 'mbTahunAnggaran.mb_tahun_anggaran_nama',
                 /*[
                     'attribute' => 'mb_tahun_anggaran_nama',
                     'value' => 'mbTahunAnggaran.mb_tahun_anggaran_nama',
@@ -127,7 +127,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'header' => 'Pagu Indikatif',
                     //'value' => 'mb_renja_pagu_indikatif',
                     'value' => function($model) {
-                        return 'Rp. <span style="text-align: right;">'.number_format($model->mb_renja_pagu_indikatif,0,',','.').'</spam>';
+                        //return 'Rp. <span style="text-align: right;">'.number_format($model->mb_renja_pagu_indikatif,0,',','.').'</spam>';
+                        //return $model->
+                        $satuan = 0;
+                        $harga = 0;
+                        foreach ($model->mbUraianPekerjaans as $key => $value) {
+                            //return $value->mb_uraian_pekerjaan_vol*$value->mb_uraian_pekerjaan_harga_satuan;
+                            $satuan = $satuan + $value->mb_uraian_pekerjaan_vol;
+                            $harga = $harga + $value->mb_uraian_pekerjaan_harga_satuan;
+                        }
+                        return 'Rp. '.number_format($satuan*$harga,0,',','.');
                     },
                     'format' => 'raw',
                     'mergeHeader' => true,

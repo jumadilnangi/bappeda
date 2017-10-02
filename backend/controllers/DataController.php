@@ -38,6 +38,51 @@ class DataController extends Controller
 		$this->_db = Yii::$app->db;
 	}
 
+	public function actionGetlokasi()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryStruk = $this->_db->createCommand("SELECT kel.mb_kelurahan_desa_id AS id, CONCAT('Desa/Kelurahan ', kel.mb_kelurahan_desa_nama, ', Kecamatan ', kec.mb_kecamatan_nama, ', Kabupaten/Kota ', kab.mb_kabupaten_nama, ' Propinsi ',prov.mb_provinsi_nama) AS text
+				FROM mb_kelurahan_desa AS kel
+				JOIN mb_kecamatan AS kec USING(mb_kecamatan_id)
+				JOIN mb_kabupaten_kota AS kab USING(mb_kabupaten_kota_id)
+				JOIN mb_provinsi AS prov USING(mb_provinsi_id)
+				WHERE LOWER(kel.mb_kelurahan_desa_nama) LIKE :cari
+					OR LOWER(kec.mb_kecamatan_nama) LIKE :cari
+				    OR LOWER(kab.mb_kabupaten_nama) LIKE :cari
+				    OR LOWER(prov.mb_provinsi_nama) LIKE :cari
+				LIMIT :batas")
+			->bindValue(':cari', '%'.strtolower($cari).'%')
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryStruk;
+		return $out;
+	}
+
+	public function actionGetrenja()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryStruk = $this->_db->createCommand("SELECT ren.mb_renja_id AS id, keg.mb_kegiatan_nama AS text
+				FROM mb_renja AS ren
+				JOIN mb_kegiatan AS keg USING(mb_kegiatan_id)
+				JOIN mb_program AS prog USING(mb_program_id)
+				WHERE keg.mb_kegiatan_kode LIKE :cari
+					OR keg.mb_kegiatan_nama LIKE :cari
+				LIMIT :batas")
+			->bindValue(':cari', '%'.strtolower($cari).'%')
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryStruk;
+		return $out;
+	}
+
 	public function actionGetprioritas()
 	{
 		\Yii::$app->response->format = Response::FORMAT_JSON;

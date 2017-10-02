@@ -16,6 +16,9 @@ use backend\models\customs\UrusanHasSkpd;
 use backend\models\customs\Program;
 use backend\models\customs\Kegiatan;
 use backend\models\customs\Prioritas;
+use backend\models\customs\UraianPekerjaan;
+//use backend\models\MbUraianPekerjaanSearch;
+use backend\models\customs\search\UraianPekerjaanSearch;
 
 /**
  * MbRenjaController implements the CRUD actions for MbRenja model.
@@ -257,14 +260,27 @@ class MbRenjaController extends Controller
     public function actionDetailrenja()
     {
         $id = Yii::$app->request->post('expandRowKey');
-        //$id = 1;
         $model = $this->findModel($id);
+
+        //$modelUraian = UraianPekerjaan::findOne(['mb_renja_id' => $id]);
+        $searchModel = new UraianPekerjaanSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere([
+            'mb_renja_id' => $id
+        ]);
+
         //echo "<pre>";
         //print_r($model);
         //echo "</pre>";
         return $this->renderPartial('_detailrenja', [
-            'model' => $model
+            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionTambahuraian($id='')
+    {
+        echo "Test";
     }
 
     /**
@@ -276,7 +292,7 @@ class MbRenjaController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = MbRenja::findOne($id)) !== null) {
+        if (($model = Renja::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
