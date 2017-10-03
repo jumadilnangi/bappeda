@@ -128,7 +128,7 @@ use backend\models\customs\SumberDana;
 						[
 							'header' => 'Lokasi',
 							'value' => function($model) {
-								$queryLokasi = Yii::$app->db->createCommand("SELECT CONCAT('Desa/Kelurahan ', kel.mb_kelurahan_desa_nama, ', Kecamatan ', kec.mb_kecamatan_nama, ', Kabupaten/Kota ', kab.mb_kabupaten_nama, ' Propinsi ',prov.mb_provinsi_nama) AS lokasi
+								/*$queryLokasi = Yii::$app->db->createCommand("SELECT CONCAT('Desa/Kelurahan ', kel.mb_kelurahan_desa_nama, ', Kecamatan ', kec.mb_kecamatan_nama, ', Kabupaten/Kota ', kab.mb_kabupaten_nama, ' Propinsi ',prov.mb_provinsi_nama) AS lokasi
 										FROM mb_lokasi_pekerjaan AS lok
 										JOIN mb_kelurahan_desa AS kel USING(mb_kelurahan_desa_id)
 										JOIN mb_kecamatan AS kec USING(mb_kecamatan_id)
@@ -140,7 +140,13 @@ use backend\models\customs\SumberDana;
 									'javascript:void()', ['data-toggle' => 'tooltip', 
 									'data-placement' => 'bottom', 
 									'title' => $queryLokasi['lokasi']
-								]);
+								]);*/
+								$ul = '<ul>';
+								foreach ($model->mbLokasiPekerjaans as $key => $value) {
+									$ul .= '<li>'.$value->mbKelurahanDesa->mb_kelurahan_desa_nama.'</li>';
+								}
+								$ul .= '</ul>';
+								return $ul;
 							},
 							'format' => 'raw',
 							'width' => '150px'
