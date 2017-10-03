@@ -8,6 +8,9 @@ use yii\widgets\DetailView;
 <div class="box box-default">
 	<div class="box-header with-border">
 		<h3 class="box-title">Detail Uraian Pekerjaan</h3>
+		<div class="box-tools pull-right">
+			<?= Html::a('<i class="fa fa-map-marker" aria-hidden="true"></i> Tambah Lokasi pekerjaan', ['/mb-lokasi-pekerjaan/create'], ['class' => 'btn btn-warning btn-sm']) ?>
+		</div>
 	</div>
 	<div class="box-body">
 		<?= DetailView::widget([
@@ -43,8 +46,21 @@ use yii\widgets\DetailView;
 				],
 				// lokasi
 				[
-					'attribute' => 'mbLokasiPekerjaan.mbKelurahanDesa.mb_kelurahan_desa_nama',
-					'label' => 'Lokasi Kegiatan'
+					//'attribute' => 'mbLokasiPekerjaan.mbKelurahanDesa.mb_kelurahan_desa_nama',
+					'label' => 'Lokasi Kegiatan',
+					'value' => function($model) {
+						//return $model->mbLokasiPekerjaan->mbKelurahanDesa.mb_kelurahan_desa_nama;
+						$ul = '<ul>';
+						foreach ($model->mbLokasiPekerjaans as $key => $value) {
+							$ul .= '<li>'.$value->mbKelurahanDesa->mb_kelurahan_desa_nama.'</li>';
+							//echo "<pre>";
+							//print_r($value->mbKelurahanDesa->mb_kelurahan_desa_nama);
+							//echo "</pre>";
+						}
+						$ul .= '</ul>';
+						return $ul;
+					},
+					'format' => 'raw'
 				],
 				[
 					'attribute' => 'mbUraianPekerjaanHasStatus.mbUraianStatus.mb_uraian_status_nama',

@@ -10,7 +10,10 @@ use kartik\select2\Select2;
 
 use backend\models\MbSumberDana;
 use backend\models\MbRenja;
+use backend\models\MbKelurahanDesa;
+use backend\models\MbLokasiPekerjaan;
 use backend\models\customs\UraianStatus;
+
 
 $form = ActiveForm::begin([
     //'id' => 'submit_form',
@@ -31,8 +34,10 @@ $form = ActiveForm::begin([
     </div>
     <div class="box-body">
         <?php
+            $_renja = !empty($model->mb_renja_id) ? MbRenja::findOne($model->mb_renja_id)->mbKegiatan->mb_kegiatan_nama : '';
             echo $form->field($model, 'mb_renja_id')->widget(Select2::classname(),[
                 'theme' => Select2::THEME_BOOTSTRAP,
+                'initValueText' => $_renja,
                 'options' => [
                     'placeholder' => 'Kegiatan Rencana Kerja',
                 ],
@@ -58,12 +63,24 @@ $form = ActiveForm::begin([
                     'prompt'=>'Pilih Sumber Dana',
             ]);
 
+            $kelQuery = Yii::$app->db->createCommand("SELECT kel.mb_kelurahan_desa_id AS id, CONCAT('Desa/Kelurahan ', kel.mb_kelurahan_desa_nama, ', Kecamatan ', kec.mb_kecamatan_nama, ', Kabupaten/Kota ', kab.mb_kabupaten_nama, ' Propinsi ',prov.mb_provinsi_nama) AS lokasi
+                    FROM mb_kelurahan_desa AS kel
+                    JOIN mb_kecamatan AS kec USING(mb_kecamatan_id)
+                    JOIN mb_kabupaten_kota AS kab USING(mb_kabupaten_kota_id)
+                    JOIN mb_provinsi AS prov USING(mb_provinsi_id)
+                    WHERE kel.mb_kelurahan_desa_id=:id")
+                ->bindValue(':id', $modelLokasi->mb_kelurahan_desa_id)
+                ->queryOne();
+            $_kel = $kelQuery['lokasi'];
             echo $form->field($modelLokasi, 'mb_kelurahan_desa_id')->widget(Select2::classname(),[
                 'theme' => Select2::THEME_BOOTSTRAP,
+                'initValueText' => $_kel,
                 'options' => [
                     'placeholder' => 'Lokasi Pekerjaan',
+                    //'multiple' => true,
                 ],
                 'pluginOptions' => [
+                    //'tokenSeparators' => [','],
                     //'width' => '500px',
                     'allowClear' => true,
                     'language' => [

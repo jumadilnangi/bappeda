@@ -2,7 +2,9 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+
 use kartik\grid\GridView;
+use kartik\grid\EditableColumn;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\MbUraianPekerjaanSearch */
@@ -22,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
+            //'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'kartik\grid\SerialColumn'],
 
@@ -39,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'collapseIcon' => '<i class="fa fa-caret-down"></i>',
                 ],
                 [
+                    //'class' => EditableColumn::className(),
                     'header' => 'Status',
                     'value' => 'mbUraianPekerjaanHasStatus.mbUraianStatus.mb_uraian_status_nama',
                     'width' => '80px',
@@ -112,6 +115,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'kartik\grid\ActionColumn',
                     'header' => '',
                     'template' => '{update} {delete}',
+                    //'template' => '{add} {update} {delete}',
+                    //'buttons' => [
+                    //    'add' => function($url, $model) {
+                    //        $icon = '<i class="fa fa-plus" aria-hidden="true"></i>';
+                    //        return Html::a($icon, $url);
+                    //    },
+                    //],
                     'width' => '50px'
                 ],
             ],
