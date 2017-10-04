@@ -7,6 +7,7 @@ use yii\web\JsExpression;
 
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
+use kartik\money\MaskMoney;
 
 use backend\models\MbSumberDana;
 use backend\models\MbRenja;
@@ -105,9 +106,11 @@ $form = ActiveForm::begin([
 
             echo $form->field($model, 'mb_uraian_pekerjaan_satuan')->textInput(['maxlength' => true]);
 
-            echo $form->field($model, 'mb_uraian_pekerjaan_harga_satuan')->textInput();
+            //echo $form->field($model, 'mb_uraian_pekerjaan_harga_satuan')->textInput();
+            echo $form->field($model, 'mb_uraian_pekerjaan_harga_satuan')->widget(MaskMoney::classname());
 
-            echo $form->field($model, 'mb_uraian_pekerjaan_pagu_tahun_maju')->textInput();
+            //echo $form->field($model, 'mb_uraian_pekerjaan_pagu_tahun_maju')->textInput();
+            echo $form->field($model, 'mb_uraian_pekerjaan_pagu_tahun_maju')->widget(MaskMoney::classname());
 
             echo $form->field($modelStatus, 'mb_uraian_status_id')->dropDownList(
                 ArrayHelper::map(UraianStatus::find()->all(),'mb_uraian_status_id','mb_uraian_status_nama'), [
