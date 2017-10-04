@@ -116,6 +116,15 @@ use backend\models\customs\SumberDana;
 							'width' => '100px',
 							'hAlign' => 'right'
 						],
+						[
+							'header' => 'Jumlah Harga',
+							'value' => function($model) {
+								//return $model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan
+								return 'Rp. '.number_format($model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan,0,',','.');
+							},
+							'width' => '100px',
+							'hAlign' => 'right'
+						],
 						// 'mb_uraian_pekerjaan_pagu_tahun_maju',
 						[
 							'header' => 'Pagu Tahun Maju',

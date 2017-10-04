@@ -100,7 +100,7 @@ $form = ActiveForm::begin([
 							hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
 						FROM mb_urusan_has_skpd AS hs
 						JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
-						WHERE hs.mb_urusan_id = :id")
+						WHERE hs.mb_urusan_has_skpd_id = :id")
 					->bindValue(':id', $model->mbKegiatan->mbProgram->mbUrusanHasSkpd->mb_urusan_has_skpd_id)
 					->queryOne();
 			}
