@@ -9,13 +9,9 @@ use yii\helpers\Html;
 $this->title = 'Buat Lokasi Pekerjaan';
 $this->params['breadcrumbs'][] = ['label' => 'Data Lokasi Pekerjaan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+	'id_uraian' => $id_uraian
+]);
 ?>
-<div class="mb-lokasi-pekerjaan-create">
-
-  
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

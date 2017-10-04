@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 echo $this->render('_form', [
 	'model' => $model,
 	'modelStatus' => $modelStatus,
-	'modelLokasi' => $modelLokasi
+	'modelLokasi' => $modelLokasi,
+	'id_renja' => $id_renja
 ]);
 ?>

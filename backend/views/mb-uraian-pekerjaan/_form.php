@@ -24,7 +24,7 @@ $form = ActiveForm::begin([
 ?>
 <div class="box box-default">
     <div class="box-header with-border">
-        <h3 class="box-title">Tambah Data</h3>
+        <h3 class="box-title"><?= $model->isNewRecord ? 'Tambah Data' : 'Edit Data' ?></h3>
 
         <div class="box-tools pull-right">
             <!--button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button-->
@@ -34,7 +34,9 @@ $form = ActiveForm::begin([
     </div>
     <div class="box-body">
         <?php
-            $_renja = !empty($model->mb_renja_id) ? MbRenja::findOne($model->mb_renja_id)->mbKegiatan->mb_kegiatan_nama : '';
+            $_renja = isset($model->mb_renja_id) ? MbRenja::findOne($model->mb_renja_id)->mbKegiatan->mb_kegiatan_nama : (!empty($id_renja) ? MbRenja::findOne($id_renja)->mbKegiatan->mb_kegiatan_nama : '');
+            $model->mb_renja_id = isset($id_renja) ? $id_renja : $model->mb_renja_id;
+
             echo $form->field($model, 'mb_renja_id')->widget(Select2::classname(),[
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'initValueText' => $_renja,

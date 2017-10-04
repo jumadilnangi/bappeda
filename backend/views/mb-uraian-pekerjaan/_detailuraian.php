@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 	<div class="box-header with-border">
 		<h3 class="box-title">Detail Uraian Pekerjaan</h3>
 		<div class="box-tools pull-right">
-			<?= Html::a('<i class="fa fa-map-marker" aria-hidden="true"></i> Tambah Lokasi pekerjaan', ['/mb-lokasi-pekerjaan/create'], ['class' => 'btn btn-warning btn-sm']) ?>
+			<?= Html::a('<i class="fa fa-map-marker" aria-hidden="true"></i> Tambah Lokasi pekerjaan', ['/mb-lokasi-pekerjaan/create', 'id_uraian' => $model->mb_uraian_pekerjaan_id], ['class' => 'btn btn-warning btn-sm']) ?>
 		</div>
 	</div>
 	<div class="box-body">

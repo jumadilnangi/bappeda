@@ -9,6 +9,9 @@ use yii\web\JsExpression;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use kartik\widgets\DepDrop;
+use kartik\money\MaskMoney;
+
+use backend\models\MbUrusanHasSkpd;
 
 $form = ActiveForm::begin([
 	//'id' => 'submit_form',
@@ -67,8 +70,20 @@ $form = ActiveForm::begin([
 				</td>
 				<td width="350px">
 					<?php
+						$_value['name'] = '';
+						if (isset($model->mb_urusan_has_skpd_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT mb_urusan_id AS id, 
+										CONCAT(mb_urusan_kode,' - ', mb_urusan_nama) AS name
+									FROM mb_urusan
+									WHERE mb_urusan_id=:id")
+								->bindValue(':id', $model->mbUrusanHasSkpd->mb_urusan_id)
+								->queryOne();
+
+						}
+						$modelUrusan->mb_urusan_id = $_value ? $_value['name'] : $modelUrusan->mb_urusan_id;
 						echo $form->field($modelUrusan, 'mb_urusan_id', ['showLabels' => false,])->widget(Select2::classname(),[
 							'theme' => Select2::THEME_BOOTSTRAP,
+							'initValueText' => $_value['name'],
 							'options' => [
 								'placeholder' => 'Urusan..',
 								'id' => 'id_urusan',
@@ -96,9 +111,20 @@ $form = ActiveForm::begin([
 				</td>
 				<td width="350px">
 					<?php
+						$_value['id'] = '';
+						$_value['name'] = '';
+						if (isset($model->mb_urusan_has_skpd_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT 
+										hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
+									FROM mb_urusan_has_skpd AS hs
+									JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
+									WHERE hs.mb_urusan_id = :id")
+								->bindValue(':id', $model->mb_urusan_has_skpd_id)
+								->queryOne();
+						}
 						echo $form->field($model, 'mb_urusan_has_skpd_id', ['showLabels' => false,])->widget(DepDrop::classname(), [
-							//'options' => ['placeholder' => 'Pilih SKPD...'],
 							'type' => DepDrop::TYPE_SELECT2,
+							'data' => [$_value['id'] => $_value['name']],
 							'select2Options'=>[
 								'theme' => Select2::THEME_BOOTSTRAP,
 								'options' => ['placeholder' => 'Pilih SKPD...'],
@@ -127,9 +153,20 @@ $form = ActiveForm::begin([
 				</td>
 				<td>
 					<?php
+						$_value['name'] = '';
+						if (isset($model->mb_urusan_has_skpd_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT mb_rekening_struk_id AS id,
+										CONCAT(mb_rekening_struk_kode,' - ', mb_rekening_struk_nama) AS name
+									FROM mb_rekening_struk
+									WHERE mb_rekening_struk_id=:id")
+								->bindValue(':id', $model->mbRekeningRincian->mbRekeningObyek->mbRekeningJenis->mbRekeningKelompok->mbRekeningStruk->mb_rekening_struk_id)
+								->queryOne();
+
+						}
+						$modelStruk->mb_rekening_struk_id = $_value ? $_value['name'] : $modelStruk->mb_rekening_struk_id;
 						echo $form->field($modelStruk, 'mb_rekening_struk_id', ['showLabels' => false,])->widget(Select2::classname(),[
 							'theme' => Select2::THEME_BOOTSTRAP,
-							//'size' => Select2::SMALL,
+							'initValueText' => $_value['name'],
 							'options' => [
 								'placeholder' => 'Struk..',
 								'id' => 'id_struk',
@@ -157,9 +194,19 @@ $form = ActiveForm::begin([
 				</td>
 				<td>
 					<?php
+						$_value['id'] = '';
+						$_value['name'] = '';
+						if (isset($model->mb_rekening_rincian_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT mb_rekening_kelompok_id AS id, 
+										CONCAT(mb_rekening_kelompok_kode, ' - ', mb_rekening_kelompok_nama) AS name
+									FROM mb_rekening_kelompok
+									WHERE mb_rekening_kelompok_id = :id")
+								->bindValue(':id', $model->mbRekeningRincian->mbRekeningObyek->mbRekeningJenis->mbRekeningKelompok->mb_rekening_kelompok_id)
+								->queryOne();
+						}
 						echo $form->field($modelKelompok, 'mb_rekening_kelompok_id', ['showLabels' => false,])->widget(DepDrop::classname(), [
-							//'options' => ['placeholder' => 'Pilih SKPD...'],
 							'type' => DepDrop::TYPE_SELECT2,
+							'data' => [$_value['id'] => $_value['name']],
 							'options' => ['id' => 'id_kelompok'],
 							'select2Options'=>[
 								'theme' => Select2::THEME_BOOTSTRAP,
@@ -187,9 +234,19 @@ $form = ActiveForm::begin([
 				</td>
 				<td>
 					<?php
+						$_value['id'] = '';
+						$_value['name'] = '';
+						if (isset($model->mb_rekening_rincian_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT mb_rekening_jenis_id AS id, 
+										CONCAT(mb_rekening_jenis_kode, ' - ',mb_rekening_jenis_nama) AS name
+									FROM mb_rekening_jenis
+									WHERE mb_rekening_jenis_id = :id")
+								->bindValue(':id', $model->mbRekeningRincian->mbRekeningObyek->mbRekeningJenis->mb_rekening_jenis_id)
+								->queryOne();
+						}
 						echo $form->field($modelJenis, 'mb_rekening_jenis_id', ['showLabels' => false,])->widget(DepDrop::classname(), [
-							//'options' => ['placeholder' => 'Pilih SKPD...'],
 							'type' => DepDrop::TYPE_SELECT2,
+							'data' => [$_value['id'] => $_value['name']],
 							'options' => ['id' => 'id_jenis'],
 							'select2Options'=>[
 								'theme' => Select2::THEME_BOOTSTRAP,
@@ -215,9 +272,19 @@ $form = ActiveForm::begin([
 				</td>
 				<td>
 					<?php
+						$_value['id'] = '';
+						$_value['name'] = '';
+						if (isset($model->mb_rekening_rincian_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT mb_rekening_obyek_id AS id, 
+										CONCAT(mb_rekening_obyek_kode, ' - ',mb_rekening_obyek_nama) AS name
+									FROM mb_rekening_obyek
+									WHERE mb_rekening_obyek_id = :id")
+								->bindValue(':id', $model->mbRekeningRincian->mbRekeningObyek->mb_rekening_obyek_id)
+								->queryOne();
+						}
 						echo $form->field($modelObyek, 'mb_rekening_obyek_id', ['showLabels' => false,])->widget(DepDrop::classname(), [
-							//'options' => ['placeholder' => 'Pilih SKPD...'],
 							'type' => DepDrop::TYPE_SELECT2,
+							'data' => [$_value['id'] => $_value['name']],
 							'options' => ['id' => 'id_obyek'],
 							'select2Options'=>[
 								'theme' => Select2::THEME_BOOTSTRAP,
@@ -245,9 +312,19 @@ $form = ActiveForm::begin([
 				</td>
 				<td colspan="3">
 					<?php
+						$_value['id'] = '';
+						$_value['name'] = '';
+						if (isset($model->mb_rekening_rincian_id)) {
+							$_value = Yii::$app->db->createCommand("SELECT mb_rekening_rincian_id AS id, 
+										CONCAT(mb_rekening_rincian_kode, ' - ', mb_rekening_rincian_nama) AS name
+									FROM mb_rekening_rincian
+									WHERE mb_rekening_rincian_id = :id")
+								->bindValue(':id', $model->mb_rekening_rincian_id)
+								->queryOne();
+						}
 						echo $form->field($model, 'mb_rekening_rincian_id', ['showLabels' => false,])->widget(DepDrop::classname(), [
-							//'options' => ['placeholder' => 'Pilih SKPD...'],
 							'type' => DepDrop::TYPE_SELECT2,
+							'data' => [$_value['id'] => $_value['name']],
 							'options' => ['id' => 'id_rekening'],
 							'select2Options'=>[
 								'theme' => Select2::THEME_BOOTSTRAP,
@@ -295,7 +372,10 @@ $form = ActiveForm::begin([
 					<?= Html::activeLabel($model, 'mb_skpd_has_rekening_rincian_harga', ['label'=>'Harga', 'class'=>'control-label']) ?>
 				</td>
 				<td colspan="3">
-					<?= $form->field($model, 'mb_skpd_has_rekening_rincian_harga', ['showLabels' => false,])->textInput() ?>
+					<!--?= $form->field($model, 'mb_skpd_has_rekening_rincian_harga', ['showLabels' => false,])->textInput() ?-->
+					<?php
+						echo $form->field($model, 'mb_skpd_has_rekening_rincian_harga', ['showLabels' => false,])->widget(MaskMoney::classname());
+					?>
 				</td>
 			</tr>
 			<tr>

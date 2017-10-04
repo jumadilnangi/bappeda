@@ -159,7 +159,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'class' => 'kartik\grid\ActionColumn',
-                    'template' => '{update} {delete}'
+                    'template' => '{update} {delete}',
+                    'buttons' => [
+                        'update' => function($url, $model) {
+                            $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+                            return Html::a($icon, $url);
+                        },
+                        'delete' => function($url, $model) {
+                            $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
+                            return Html::a($icon, $url, [
+                                'data-confirm' => 'Anda yakin menghapus data ini?',
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
+                            ]);
+                        },
+                    ]
                 ],
             ],
         ]); ?>    
