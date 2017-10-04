@@ -37,6 +37,12 @@ use yii\widgets\DetailView;
 						return 'Rp. '.number_format($model->mb_uraian_pekerjaan_harga_satuan,0,',','.');
 					}
 				],
+				[
+					'label' => 'Jumlah Harga',
+					'value' => function($model) {
+						return 'Rp. '.number_format($model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan,0,',','.');
+					},
+				],
 				// 'mb_uraian_pekerjaan_pagu_tahun_maju',
 				[
 					'attribute' => 'mb_uraian_pekerjaan_pagu_tahun_maju',

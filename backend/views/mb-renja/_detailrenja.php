@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -119,7 +120,6 @@ use backend\models\customs\SumberDana;
 						[
 							'header' => 'Jumlah Harga',
 							'value' => function($model) {
-								//return $model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan
 								return 'Rp. '.number_format($model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan,0,',','.');
 							},
 							'width' => '100px',
@@ -160,7 +160,26 @@ use backend\models\customs\SumberDana;
 							'format' => 'raw',
 							'width' => '150px'
 						],
-						//['class' => 'yii\grid\ActionColumn'],
+						[
+							'class' => 'kartik\grid\ActionColumn',
+							'template' => '{update} {delete}',
+							'buttons' => [
+								'update' => function($url, $model) {
+									$icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+									$url = Url::to(['/mb-uraian-pekerjaan/update', 'id' => $model->mb_uraian_pekerjaan_id]);
+									return Html::a($icon, $url);
+								},
+								'delete' => function($url, $model) {
+									$icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
+									$url = Url::to(['/mb-uraian-pekerjaan/delete', 'id' => $model->mb_uraian_pekerjaan_id]);
+									return Html::a($icon, $url, [
+										'data-confirm' => 'Anda yakin menghapus data ini?',
+										'data-method' => 'post',
+										'data-pjax' => '0',
+									]);
+								},
+							]
+						],
 					],
 				]); ?>
 			</div>
