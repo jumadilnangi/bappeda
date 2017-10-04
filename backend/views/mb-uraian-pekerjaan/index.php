@@ -52,6 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'mb_renja_id',
                     'label' => 'Kegiatan',
                     'value' => 'mbRenja.mbKegiatan.mb_kegiatan_nama',
+                    'group'=>true,
+                    'groupedRow'=>true,
                 ],
                 // 'mb_sumber_dana_id',
                 [
@@ -79,6 +81,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'width' => '100px',
                     'hAlign' => 'right',
+                ],
+                [
+                    'header' => 'Jumlah Harga',
+                    'value' => function($model) {
+                        return 'Rp. '.number_format($model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan,0,',','.');
+                    },
+                    'width' => '100px',
+                    'hAlign' => 'right'
                 ],
                 // 'mb_uraian_pekerjaan_pagu_tahun_maju',
                 [
