@@ -127,9 +127,10 @@ class MbUraianPekerjaanController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelLokasi = LokasiPekerjaan::findOne(['mb_uraian_pekerjaan_id' => $model->mb_uraian_pekerjaan_id]);
-        $modelStatus = UraianPekerjaanHasStatus::findOne(['mb_uraian_pekerjaan_id' => $model->mb_uraian_pekerjaan_id]);
-
+        //$modelLokasi = LokasiPekerjaan::findOne(['mb_uraian_pekerjaan_id' => $model->mb_uraian_pekerjaan_id]);
+        //$modelStatus = UraianPekerjaanHasStatus::findOne(['mb_uraian_pekerjaan_id' => $model->mb_uraian_pekerjaan_id]);
+        $modelLokasi = $this->findModelLokasi($id);
+        $modelStatus = $this->findModelStatus($id);
         if ($model->load(Yii::$app->request->post()) && $modelLokasi->load(Yii::$app->request->post()) && $modelStatus->load(Yii::$app->request->post()) ) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -215,6 +216,26 @@ class MbUraianPekerjaanController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findModelStatus($id)
+    {
+        if (($model = UraianPekerjaanHasStatus::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+            //return '';
+        }
+    }
+
+    protected function findModelLokasi($id)
+    {
+        if (($model = LokasiPekerjaan::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+            //return '';
         }
     }
 }
