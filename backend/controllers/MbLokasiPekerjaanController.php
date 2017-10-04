@@ -51,7 +51,7 @@ class MbLokasiPekerjaanController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_uraian = '')
     {
         $model = new LokasiPekerjaan();
 
@@ -73,6 +73,7 @@ class MbLokasiPekerjaanController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'id_uraian' => $id_uraian
             ]);
         }
     }
@@ -112,6 +113,7 @@ class MbLokasiPekerjaanController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'id_uraian' => $id
             ]);
         }
     }

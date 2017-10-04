@@ -140,6 +140,12 @@ class MbSkpdHasRekeningRincianController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelStruk = new RekeningStruk();
+        $modelUrusan = new Urusan();
+        $modelKelompok = new RekeningKelompok();
+        $modelJenis = new RekeningJenis();
+        $modelObyek = new RekeningObyek();
+        $modelRinci = new RekeningRinci();
 
         /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]);
@@ -168,6 +174,12 @@ class MbSkpdHasRekeningRincianController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelStruk' => $modelStruk,
+                'modelUrusan' => $modelUrusan,
+                'modelKelompok' => $modelKelompok,
+                'modelJenis' => $modelJenis,
+                'modelObyek' => $modelObyek,
+                'modelRinci' => $modelRinci
             ]);
         }
     }
@@ -180,8 +192,23 @@ class MbSkpdHasRekeningRincianController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        /*$this->findModel($id)->delete();
 
+        return $this->redirect(['index']);*/
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Data berhasil dihapus');
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak berhasil dihapus');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
+        }
         return $this->redirect(['index']);
     }
 

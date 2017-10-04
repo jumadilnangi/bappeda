@@ -117,12 +117,54 @@ class MbRenjaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelUrusan = new Urusan();
+        $modelSkpd = new UrusanHasSkpd();
+        $modelProgram = new Program();
+        $modelKegiatan = new Kegiatan();
+        $modelPrioritas = new Prioritas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->mb_renja_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelUrusan' => $modelUrusan,
+                'modelSkpd' => $modelSkpd,
+                'modelProgram' => $modelProgram,
+                'modelKegiatan' => $modelKegiatan,
+                'modelPrioritas' => $modelPrioritas,
+            ]);
+        }*/
+        if ($model->load(Yii::$app->request->post())) {
+            //return $this->redirect(['view', 'id' => $model->mb_renja_id]);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                    return $this->redirect(['index']);
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                    return $this->redirect(['index']);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                //echo "<pre>";
+                //print_r($e);
+                //echo "</pre>";
+                //exit();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+                return $this->redirect(['index']);
+            }
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+                'modelUrusan' => $modelUrusan,
+                'modelSkpd' => $modelSkpd,
+                'modelProgram' => $modelProgram,
+                'modelKegiatan' => $modelKegiatan,
+                'modelPrioritas' => $modelPrioritas,
             ]);
         }
     }
@@ -135,8 +177,23 @@ class MbRenjaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
 
+        //return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Data berhasil dihapus');
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak berhasil dihapus');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
+        }
         return $this->redirect(['index']);
     }
 

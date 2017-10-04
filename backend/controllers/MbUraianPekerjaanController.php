@@ -67,7 +67,7 @@ class MbUraianPekerjaanController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_renja='')
     {
         $model = new UraianPekerjaan();
         $modelLokasi = new LokasiPekerjaan();
@@ -112,7 +112,8 @@ class MbUraianPekerjaanController extends Controller
             return $this->render('create', [
                 'model' => $model,
                 'modelStatus' => $modelStatus,
-                'modelLokasi' => $modelLokasi
+                'modelLokasi' => $modelLokasi,
+                'id_renja' => $id_renja
             ]);
         }
     }
@@ -156,10 +157,11 @@ class MbUraianPekerjaanController extends Controller
             }
             //return $this->redirect(['view', 'id' => $model->mb_skpd_has_rekening_rincian_id]);
         } else {
-            return $this->render('create', [
+            return $this->render('update', [
                 'model' => $model,
                 'modelStatus' => $modelStatus,
-                'modelLokasi' => $modelLokasi
+                'modelLokasi' => $modelLokasi,
+                'id_renja' => $id
             ]);
         }
     }

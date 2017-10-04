@@ -56,7 +56,7 @@ use backend\models\customs\SumberDana;
 			<div class="box-header with-border">
 				<h3 class="box-title">Uraian Pekerjaan</h3>
 				<div class="box-tools pull-right">
-					<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Tambah uraian pekerjaan', ['/mb-uraian-pekerjaan/create'], ['class' => 'btn btn-danger btn-sm']) ?>
+					<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Tambah uraian pekerjaan', ['/mb-uraian-pekerjaan/create', 'id_renja' => $model->mb_renja_id], ['class' => 'btn btn-danger btn-sm']) ?>
 				</div>
 			</div>
 			<div class="box-body">

@@ -21,7 +21,7 @@ $form = ActiveForm::begin([
 ?>
 <div class="box box-default">
     <div class="box-header with-border">
-        <h3 class="box-title">Tambah Data</h3>
+        <h3 class="box-title"><?= $model->isNewRecord ? 'Tambah Data' : 'Edit Data' ?></h3>
 
         <div class="box-tools pull-right">
             <!--button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button-->
@@ -30,6 +30,12 @@ $form = ActiveForm::begin([
         </div>
     </div>
     <div class="box-body">
+        <?php 
+            echo $id_uraian; 
+            if (!empty($id_uraian)) {
+                $model->mb_uraian_pekerjaan_id = $id_uraian;
+            }
+        ?>
         <?= $form->field($model, 'mb_uraian_pekerjaan_id')->dropDownList(
              ArrayHelper::map(MbUraianPekerjaan::find()->all(),'mb_uraian_pekerjaan_id','mb_uraian_pekerjaan_nama'),
             [
