@@ -100,8 +100,6 @@ class MbRenja extends \yii\db\ActiveRecord
         return $this->hasOne(MbSasaran::className(), ['mb_sasaran_id' => 'mb_sasaran_id']);
     }
     
-    
-
     /**
      * @return \yii\db\ActiveQuery
      */
