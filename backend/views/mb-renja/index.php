@@ -23,10 +23,28 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="box-body">
+        <div class="pull-right">
+            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+        </div>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax' => true,
+            'pjaxSettings' => [
+                'neverTimeout'=>true,
+                'options' => [
+                    'id'=>'grid_container',
+                ],
+            ],
+            'layout' => '<div class="clearfix"></div>
+                                {items}
+                                <table width="100%" style="margin-top: -10px;">
+                                    <tr>
+                                        <td>{summary}</td>
+                                        <td align="right">{pager}</td>
+                                    </tr>
+                                </table>
+                                <div class="clearfix"></div>',
             'columns' => [
                 //['class' => 'kartik\grid\SerialColumn'],
                 [
