@@ -26,7 +26,7 @@ class DataController extends Controller
 			'verbs' => [
 				'class' => VerbFilter::className(),
 				'actions' => [
-					'*' => ['POST'],
+					//'*' => ['POST'],
 				],
 			],
 		];
@@ -36,6 +36,28 @@ class DataController extends Controller
 	{
 		$this->_request = Yii::$app->request;
 		$this->_db = Yii::$app->db;
+	}
+
+	public function actionGetRole()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryRole = $this->_db->createCommand("SELECT name AS id, name AS text
+				FROM auth_item
+				WHERE (LOWER(name) LIKE :nama
+					OR LOWER(description) LIKE :des)
+					AND type=:tipe
+				LIMIT :batas")
+			->bindValue(':nama', '%'.strtolower($cari).'%')
+			->bindValue(':des', '%'.strtolower($cari).'%')
+			->bindValue(':tipe', 1)
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryRole;
+		return $out;
 	}
 
 	public function actionGetlokasi()

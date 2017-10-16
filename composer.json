@@ -23,7 +23,11 @@
         "kartik-v/yii2-grid": "~3.0",
         "kartik-v/yii2-widgets": "~3.0",
         "kartik-v/yii2-editable": "~1.0",
-        "kartik-v/yii2-money": "~1.0"
+        "kartik-v/yii2-money": "~1.0",
+        "kartik-v/yii2-mpdf": "~1.0",
+        "mdmsoft/yii2-admin": "~2.0",
+        "box/spout": "~2.0",
+        "phpoffice/phpexcel": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
