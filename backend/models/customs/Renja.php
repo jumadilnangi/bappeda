@@ -9,6 +9,16 @@ use backend\models\MbRenja;
 */
 class Renja extends MbRenja
 {
+	public $id_skpd;
+
+	public function rules()
+    {
+        return [
+            [['mb_tahun_anggaran_id', 'id_skpd', 'mb_kegiatan_id', 'mb_sasaran_id'], 'required'],
+            [['mb_tahun_anggaran_id', 'mb_kegiatan_id', 'mb_sasaran_id'], 'integer'],
+        ];
+    }
+
 	public function attributeLabels()
 	{
 		return [

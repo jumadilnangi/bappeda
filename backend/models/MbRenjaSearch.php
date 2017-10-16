@@ -79,7 +79,7 @@ class MbRenjaSearch extends MbRenja
             'mb_kegiatan_id' => $this->mb_kegiatan_id,
             'mb_sasaran_id' => $this->mb_sasaran_id,
             'mb_renja_pagu_indikatif' => $this->mb_renja_pagu_indikatif,
-            'mb_tahun_anggaran_nama' => $this->mb_tahun_anggaran_nama,
+            'mb_tahun_anggaran.mb_tahun_anggaran_nama' => $this->mb_tahun_anggaran_id,
         ]);
 
         $query->andFilterWhere(['like', 'mb_renja_indikator_kegiatan', $this->mb_renja_indikator_kegiatan])
