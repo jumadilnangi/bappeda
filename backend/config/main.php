@@ -19,6 +19,11 @@ return [
             // message source
             // 'downloadAction' => 'gridview/export/download',
             // 'i18n' => []
+        ],
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'layout' => 'left-menu',        //left-menu, right-menu, top-menu
+            'mainLayout' => '@app/views/layouts/main.php',
         ]
     ],
     'components' => [
@@ -52,6 +57,13 @@ return [
             'rules' => [
             ],
         ],
+    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'site/*',
+            //'admin/*',
+        ]
     ],
     'params' => $params,
 ];
