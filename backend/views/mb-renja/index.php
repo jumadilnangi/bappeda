@@ -149,12 +149,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         //return $model->
                         $satuan = 0;
                         $harga = 0;
+                        $total = 0;
                         foreach ($model->mbUraianPekerjaans as $key => $value) {
                             //return $value->mb_uraian_pekerjaan_vol*$value->mb_uraian_pekerjaan_harga_satuan;
                             $satuan = $satuan + $value->mb_uraian_pekerjaan_vol;
                             $harga = $harga + $value->mb_uraian_pekerjaan_harga_satuan;
+                            $total = $total + $value->mb_uraian_pekerjaan_vol * $value->mb_uraian_pekerjaan_harga_satuan;
                         }
-                        return 'Rp. '.number_format($satuan*$harga,0,',','.');
+                        return 'Rp. '.number_format($total,0,',','.');
                     },
                     'format' => 'raw',
                     'mergeHeader' => true,

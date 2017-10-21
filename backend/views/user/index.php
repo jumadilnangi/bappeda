@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 
+use common\components\widgets\ToggleColumn;
 use kartik\grid\GridView;
 use kartik\grid\EditableColumn;
 
@@ -81,7 +82,7 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         'hAlign' => 'center',
                     ],
                     // 'status',
-                    [
+                    /*[
                         'attribute' => 'status',
                         'value' => function($model) {
                             return $model->status == 10 ? 'Aktif' : 'Disable';
@@ -100,6 +101,29 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         ),
                         'width' => '100px',
                         'hAlign' => 'center'
+                    ],*/
+                    [
+                        'class' => ToggleColumn::className(),
+                        'updateAction' => ['toggle-status'],
+                        'attribute' => 'status',
+                        'buttons' => [
+                            '10' => 'Aktif',
+                            '0' => 'Disable',
+                        ],
+                        'sizeButton' => 'btn-group-sm',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel, 
+                            'status', 
+                            [
+                                '0' => 'Disable', 
+                                '10' => 'Aktif'
+                            ],
+                            [
+                                'class'=>'form-control',
+                                'prompt' => 'All'
+                            ]
+                        ),
+                        'width' => '150px'
                     ],
                     // 'created_at',
                     [
