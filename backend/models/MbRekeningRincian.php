@@ -47,10 +47,10 @@ class MbRekeningRincian extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_rincian_id' => 'ID Rincian Rekening',
-            'mb_rekening_obyek_id' => 'Obyek ',
-            'mb_rekening_rincian_kode' => 'Kode Rincian ',
-            'mb_rekening_rincian_nama' => 'Nama Rincian ',
+            'mb_rekening_rincian_id' => 'ID Rincian ',
+            'mb_rekening_obyek_id' => 'Nama Obyek ',
+            'mb_rekening_rincian_kode' => 'Kode Rincian  ',
+            'mb_rekening_rincian_nama' => 'Nama  Rincian',
             'mb_rekening_rincian_ket' => 'Ket',
         ];
     }

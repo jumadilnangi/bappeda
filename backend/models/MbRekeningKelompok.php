@@ -46,11 +46,11 @@ class MbRekeningKelompok extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_kelompok_id' => 'Mb Rekening Kelompok ID',
-            'mb_rekening_struk_id' => 'Mb Rekening Struk ID',
-            'mb_rekening_kelompok_kode' => 'Mb Rekening Kelompok Kode',
-            'mb_rekening_kelompok_nama' => 'Mb Rekening Kelompok Nama',
-            'mb_rekening_kelompok_ket' => 'Mb Rekening Kelompok Ket',
+            'mb_rekening_kelompok_id' => 'ID Kelompok ',
+            'mb_rekening_struk_id' => 'Struk  ',
+            'mb_rekening_kelompok_kode' => 'Kode Kelompok ',
+            'mb_rekening_kelompok_nama' => 'Nama Kelompok ',
+            'mb_rekening_kelompok_ket' => 'Keterangan',
         ];
     }
 

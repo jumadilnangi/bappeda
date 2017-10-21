@@ -52,16 +52,16 @@ class MbIndikatorKinerja extends \yii\db\ActiveRecord
     {
         return [
             'mb_indikator_kinerja_id' => 'Mb Indikator Kinerja ID',
-            'mb_rpjmd_sasaran_id' => 'Mb Rpjmd Sasaran ID',
-            'mb_indikator_kinerja_isi' => 'Mb Indikator Kinerja Isi',
-            'mb_indikator_kinerja_satuan' => 'Mb Indikator Kinerja Satuan',
-            'mb_indikator_kinerja_awal' => 'Mb Indikator Kinerja Awal',
-            'mb_indikator_kinerja_target_1' => 'Mb Indikator Kinerja Target 1',
-            'mb_indikator_kinerja_target_2' => 'Mb Indikator Kinerja Target 2',
-            'mb_indikator_kinerja_target_3' => 'Mb Indikator Kinerja Target 3',
-            'mb_indikator_kinerja_target_4' => 'Mb Indikator Kinerja Target 4',
-            'mb_indikator_kinerja_target_5' => 'Mb Indikator Kinerja Target 5',
-            'mb_indikator_kinerja_ket' => 'Mb Indikator Kinerja Ket',
+            'mb_rpjmd_sasaran_id' => 'Sasaran ',
+            'mb_indikator_kinerja_isi' => 'Indikator Kinerja ',
+            'mb_indikator_kinerja_satuan' => 'Satuan',
+            'mb_indikator_kinerja_awal' => 'Keadaan Awal',
+            'mb_indikator_kinerja_target_1' => 'Target Tahun 1',
+            'mb_indikator_kinerja_target_2' => 'Target Tahun 2',
+            'mb_indikator_kinerja_target_3' => 'Target Tahun 3',
+            'mb_indikator_kinerja_target_4' => 'Target Tahun 4',
+            'mb_indikator_kinerja_target_5' => 'Target Tahun 5',
+            'mb_indikator_kinerja_ket' => 'Ket.',
         ];
     }
 

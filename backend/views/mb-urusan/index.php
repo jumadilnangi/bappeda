@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
            // 'mb_urusan_id',
             //'mb_urusan_jenis_id',
+            
             'mb_urusan_kode',
             'mb_urusan_nama',
             [

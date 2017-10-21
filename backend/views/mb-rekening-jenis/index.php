@@ -7,16 +7,16 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\MbRekeningJenisSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Mb Rekening Jenis';
+$this->title = 'Data Jenis Rekening';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-rekening-jenis-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+ 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Mb Rekening Jenis', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('+ Jenis Rekening', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'mb_rekening_jenis_id',
-            'mb_rekening_kelompok_id',
+            //'mb_rekening_jenis_id',
+            'mbRekeningKelompok.mb_rekening_kelompok_nama',
             'mb_rekening_jenis_kode',
             'mb_rekening_jenis_nama',
             'mb_rekening_jenis_ket',

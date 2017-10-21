@@ -45,10 +45,10 @@ class MbRpjmdSasaran extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rpjmd_sasaran_id' => 'Mb Rpjmd Sasaran ID',
-            'mb_rpjmd_tujuan_id' => 'Mb Rpjmd Tujuan ID',
-            'mb_sasaran_isi' => 'Mb Sasaran Isi',
-            'mb_sasaran_ket' => 'Mb Sasaran Ket',
+            'mb_rpjmd_sasaran_id' => 'ID Sasaran',
+            'mb_rpjmd_tujuan_id' => 'Tujuan',
+            'mb_sasaran_isi' => 'Sasaran',
+            'mb_sasaran_ket' => 'Keterangan',
         ];
     }
 

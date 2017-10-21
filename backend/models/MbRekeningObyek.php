@@ -47,11 +47,11 @@ class MbRekeningObyek extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_obyek_id' => 'Mb Rekening Obyek ID',
-            'mb_rekening_jenis_id' => 'Mb Rekening Jenis ID',
-            'mb_rekening_obyek_kode' => 'Mb Rekening Obyek Kode',
-            'mb_rekening_obyek_nama' => 'Mb Rekening Obyek Nama',
-            'mb_rekening_obyek_ket' => 'Mb Rekening Obyek Ket',
+            'mb_rekening_obyek_id' => 'Id Obyek  ',
+            'mb_rekening_jenis_id' => 'Jenis  ',
+            'mb_rekening_obyek_kode' => 'Kode Obyek ',
+            'mb_rekening_obyek_nama' => 'Nama Obyek ',
+            'mb_rekening_obyek_ket' => 'Keterangan',
         ];
     }
 

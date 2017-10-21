@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use backend\models\MbRekeningJenis;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbRekeningObyek */
@@ -12,7 +15,19 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'mb_rekening_jenis_id')->textInput() ?>
+    <?= $form->field($model, 'mb_rekening_jenis_id')->widget(Select2::classname(), [
+        
+        
+        'data' => ArrayHelper::map(MbRekeningJenis::find()->all(),'mb_rekening_jenis_id','mb_rekening_jenis_nama'),
+        'language' => 'en',
+       // 'tabindex' => false,
+        'options' => ['placeholder' => 'Pilih Jenis Rekening'],
+        'pluginOptions' => [
+            'allowClear' => true
+            ],
+        ]);
+  
+    ?>
 
     <?= $form->field($model, 'mb_rekening_obyek_kode')->textInput(['maxlength' => true]) ?>
 

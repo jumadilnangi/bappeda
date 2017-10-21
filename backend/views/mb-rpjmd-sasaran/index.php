@@ -10,17 +10,17 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\MbRpjmdSasaranSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Mb Rpjmd Sasarans';
+$this->title = 'Data Sasaran';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-rpjmd-sasaran-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+ 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
       
     <p>
-        <?= Html::button('Tambah Sasaran', ['value' => Url::to('index.php?r=mb-rpjmd-sasaran/create'), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
+        <?= Html::button('Tambah Sasaran', ['value' => Url::to(['create']), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
     </p>
     
      <?php 
@@ -44,10 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'mb_rpjmd_sasaran_id',
-            'mb_rpjmd_tujuan_id',
+            //'mb_rpjmd_sasaran_id',
+            'mbRpjmdTujuan.mbRpjmdMisi.mb_rpjmd_misi_isi',
+            'mbRpjmdTujuan.mb_tujuan_isi',
             'mb_sasaran_isi:ntext',
-            'mb_sasaran_ket',
+          //  'mb_sasaran_ket',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

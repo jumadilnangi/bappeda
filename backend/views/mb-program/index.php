@@ -7,16 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\MbProgramSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Mb Programs';
+$this->title = 'Data Program';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-program-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Mb Program', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('+ Program', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +23,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'mb_program_id',
-            'mb_urusan_has_skpd_id',
+            //'mb_program_id',
+          //  'mb_urusan_has_skpd_id',
+            [
+                'attribute'=>'Urusan',
+                'value'=>'mbUrusanHasSkpd.mbUrusan.mb_urusan_nama',
+            ],
+            
+             
+            
+            
             'mb_program_kode',
             'mb_program_nama',
-            'mb_program_ket',
+            //'mb_program_ket',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

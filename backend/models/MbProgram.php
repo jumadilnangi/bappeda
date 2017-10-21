@@ -46,11 +46,11 @@ class MbProgram extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_program_id' => 'Mb Program ID',
-            'mb_urusan_has_skpd_id' => 'Mb Urusan Has Skpd ID',
-            'mb_program_kode' => 'Mb Program Kode',
-            'mb_program_nama' => 'Mb Program Nama',
-            'mb_program_ket' => 'Mb Program Ket',
+            'mb_program_id' => 'ID Program',
+            'mb_urusan_has_skpd_id' => 'Urusan',
+            'mb_program_kode' => 'Kode',
+            'mb_program_nama' => 'Nama',
+            'mb_program_ket' => 'Keterangan',
         ];
     }
 
