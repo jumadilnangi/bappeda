@@ -1,3 +1,9 @@
+<?php
+
+use dmstr\widgets\Menu;
+use mdm\admin\components\Helper;
+
+?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -25,12 +31,9 @@
             </div>
         </form>
         <!-- /.search form -->
-
-        <?= dmstr\widgets\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu'],
-                'items' => [
-                    ['label' => 'Beranda', 'icon' => 'home', 'url' => ['/site'],],
+        <?php
+            $leftMenu = [
+                ['label' => 'Beranda', 'icon' => 'home', 'url' => ['/site'],],
                     [
                         'label' => 'Master Data',
                         'icon' => 'database',
@@ -108,7 +111,7 @@
                             
                         ],
                     ],
-                    [
+                    /*[
                         'label' => 'Laporan APBD',
                         'icon' => 'book',
                         'url' => '#',
@@ -149,7 +152,7 @@
                             ['label' => 'DPA SKPD Belanja (TL)', 'icon' => 'check-circle', 'url' => ['/dpa-skpd-belanja-tidak-langsung'],],
                             ['label' => 'DPA SKPD Belajang (L)', 'icon' => 'check-circle', 'url' => ['/dpa-skpd-belanja-langsung'],],
                         ],
-                    ],
+                    ],*/
                     [
                         'label' => 'Manajemen Pengguna',
                         'icon' => 'users',
@@ -160,12 +163,25 @@
                             ['label' => 'Admin Manajemen', 'icon' => '', 'url' => ['/admin/assignment']],
                         ]
                     ],
+            ];
+
+            echo Menu::widget([
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => Helper::filter($leftMenu)
+            ]);
+        ?>
+
+        <!--?= dmstr\widgets\Menu::widget(
+            [
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => [
+                    
                    
                     
                     
                 ],
             ]
-        ) ?>
+        ) ?-->
 
     </section>
 

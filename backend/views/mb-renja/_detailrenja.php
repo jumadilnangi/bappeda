@@ -9,6 +9,7 @@ use kartik\grid\GridView;
 use backend\models\customs\SumberDana;
 //use backend\models\customs\
 
+$hargaS = 0;
 ?>
 <div class="box box-default">
 	<div class="box-header with-border">
@@ -32,11 +33,13 @@ use backend\models\customs\SumberDana;
 					'value' => function($model) {
 						$satuan = 0;
 						$harga = 0;
+						$total = 0;
 						foreach ($model->mbUraianPekerjaans as $key => $value) {
 							$satuan = $satuan + $value->mb_uraian_pekerjaan_vol;
 							$harga = $harga + $value->mb_uraian_pekerjaan_harga_satuan;
+							$total = $total + $value->mb_uraian_pekerjaan_vol * $value->mb_uraian_pekerjaan_harga_satuan;
 						}
-						return 'Rp. '.number_format($satuan*$harga,0,',','.');
+						return 'Rp. '.number_format($total,0,',','.');
 					}
 				],
 				'mb_renja_indikator_keg:ntext',
@@ -120,6 +123,7 @@ use backend\models\customs\SumberDana;
 						[
 							'header' => 'Jumlah Harga',
 							'value' => function($model) {
+								$hargaS = $model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan;
 								return 'Rp. '.number_format($model->mb_uraian_pekerjaan_vol*$model->mb_uraian_pekerjaan_harga_satuan,0,',','.');
 							},
 							'width' => '100px',

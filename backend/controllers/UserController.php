@@ -3,12 +3,14 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
-use backend\models\customs\User;
-use backend\models\customs\search\UserSearch;
+use yii\web\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+
+use backend\models\customs\User;
+use backend\models\customs\search\UserSearch;
 
 use backend\models\AuthAssignment;
 use backend\models\customs\SignUp;
@@ -28,6 +30,7 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'toggle-status' => ['POST'],
                 ],
             ],
         ];
@@ -136,6 +139,27 @@ class UserController extends Controller
             Yii::$app->session->setFlash('error','Rollback transaction, User tidak berhasil dihapus');
         }
         return $this->redirect(['index']);
+    }
+
+    public function actionToggleStatus()
+    {
+        $field = Yii::$app->request->post('attribute');
+        $id = Yii::$app->request->post('id');
+        $value = Yii::$app->request->post('value');
+
+        $query = Yii::$app->db
+            ->createCommand("UPDATE user
+                SET ".$field."=:fl
+                WHERE id=:id")
+            ->bindValue(':fl', $value)
+            ->bindValue(':id', $id)
+            ->execute();
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'status' => true,
+            'message' => '',
+        ];
     }
 
     /**

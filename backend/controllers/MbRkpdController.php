@@ -125,46 +125,6 @@ class MbRkpdController extends Controller
 		return Yii::$app->getResponse()->sendFile('tmp/'.$filename,'rkapd-tahun_anggaran'.$ta.'.xlsx',['inline' => false]);
 	}
 
-	public function generateExcelSpout($ta, $id_skpd)
-	{
-		//echo $ta.' '.$id_skpd;
-		$existingFilePath = 'template/tpl_rkpd.xlsx';
-		$newFilePath = 'tmp/export_rkpd.xlsx';
-
-		// we need a reader to read the existing file...
-		$reader = ReaderFactory::create(Type::XLSX);
-		$reader->open($existingFilePath);
-		$reader->setShouldFormatDates(true); // this is to be able to copy dates
-		//var_dump($reader);
-		//exit();
-
-		// ... and a writer to create the new file
-		$writer = WriterFactory::create(Type::XLSX);
-		$writer->openToFile($newFilePath);
-		//var_dump($writer);
-		//exit();
-
-		// let's read the entire spreadsheet...
-		foreach ($reader->getSheetIterator() as $sheetIndex => $sheet) {
-			// Add sheets in the new file, as we read new sheets in the existing one
-			/*if ($sheetIndex !== 1) {
-				$writer->addNewSheetAndMakeItCurrent();
-			}*/
-
-			foreach ($sheet->getRowIterator() as $row) {
-				// ... and copy each row into the new spreadsheet
-				$writer->addRow($row);
-			}
-		}
-
-		// At this point, the new spreadsheet contains the same data as the existing one.
-		// So let's add the new data:
-		$writer->addRow(['2015-12-25', 'Christmas gift', 29, 'USD']);
-
-		$reader->close();
-		$writer->close();
-	}
-
 	public function generatePdf($ta, $id_skpd)
 	{
 		$content = $this->renderPartial('_table', [
@@ -191,8 +151,9 @@ class MbRkpdController extends Controller
 
 	public function Cari($ta, $id_skpd)
 	{
-		echo Html::a('<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export to Excel', ['export', 'ext' => 'xls', 'ta' => $ta, 'id_skpd' => $id_skpd], ['class' => 'btn btn-success', 'target' => '_blank']).' '.
-			Html::a('<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export to PDF', ['export', 'ext' => 'pdf', 'ta' => $ta, 'id_skpd' => $id_skpd], ['class' => 'btn btn-danger', 'target' => '_blank']);
+		$tahunMaju = $ta + 1;
+		//echo Html::a('<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export to Excel', ['export', 'ext' => 'xls', 'ta' => $ta, 'id_skpd' => $id_skpd], ['class' => 'btn btn-success', 'target' => '_blank']).' '.
+		echo Html::a('<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export to PDF', ['export', 'ext' => 'pdf', 'ta' => $ta, 'id_skpd' => $id_skpd], ['class' => 'btn btn-danger', 'target' => '_blank']);
 		echo Html::beginTag('table', ['class' => 'table table-striped table-bordered']);
 			echo Html::beginTag('thead', ['class' => 'bg-yellow-gold bg-font-yellow-gold']);
 				echo Html::beginTag('tr');
@@ -200,7 +161,7 @@ class MbRkpdController extends Controller
 					echo Html::tag('th', 'Urusan/Bidang Urusan Pemerintahan Daerah Dan Program/Kegiatan', ['rowspan' => '2', 'width' => '250px', 'style' => 'vertical-align: middle; text-align: center']);
 					echo Html::tag('th', 'Indikator Kinerja Program/Kegiatan', ['rowspan' => '2', 'width' => '200px', 'style' => 'vertical-align: middle; text-align: center']);
 					echo Html::tag('th', 'Rencana Tahun '.$ta, ['colspan' => '3', 'style' => 'vertical-align: middle; text-align: center']);
-					echo Html::tag('th', 'Perkiraan Maju Rencana Tahun '.$ta, ['colspan' => '2', 'style' => 'vertical-align: middle; text-align: center']);
+					echo Html::tag('th', 'Perkiraan Maju Rencana Tahun '.$tahunMaju, ['colspan' => '2', 'style' => 'vertical-align: middle; text-align: center']);
 				echo Html::endTag('tr');
 				echo Html::beginTag('tr');
 					echo Html::tag('th', 'Lokasi', ['style' => 'vertical-align: middle; text-align: center']);
@@ -248,14 +209,17 @@ class MbRkpdController extends Controller
 									echo Html::endTag('tr');
 
 									$kegiatan = Rkpd::Kegiatan($ta, $id_skpd, $jenis['mb_urusan_jenis_id'], $urus['mb_urusan_id'], $prog['mb_program_id']);
+									$total = 0;
 									foreach ($kegiatan as $renj) {
+										$total = $total + $renj['mb_uraian_pekerjaan_vol'] * $renj['mb_uraian_pekerjaan_harga_satuan'];
 										echo Html::beginTag('tr');
 											echo Html::tag('td', $renj['keg_kode']);
 											echo Html::tag('td', $renj['mb_kegiatan_nama']);
 											echo Html::tag('td', $renj['mb_renja_indikator_kegiatan']);
 											echo Html::tag('td', $renj['mb_kabupaten_nama']);
 											echo Html::tag('td', $renj['mb_renja_target_capaian']);
-											echo Html::tag('td', number_format($renj['mb_renja_pagu_indikatif'],0,',','.'));
+											//echo Html::tag('td', number_format($renj['mb_renja_pagu_indikatif'],0,',','.'));
+											echo Html::tag('td', number_format($total,0,',','.'));
 											echo Html::tag('td', $renj['mb_renja_target_capaian_thn_maju']);
 											echo Html::tag('td', number_format($renj['mb_uraian_pekerjaan_pagu_tahun_maju'],0,',','.'));
 										echo Html::endTag('tr');

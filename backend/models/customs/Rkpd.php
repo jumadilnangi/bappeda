@@ -13,29 +13,29 @@ class Rkpd extends \yii\db\ActiveRecord
 	public static function Kegiatan($ta, $id_skpd, $id_jenis_urus, $id_urus, $id_prog)
 	{
 		$queryAll = Yii::$app->db->createCommand("SELECT renj.*, bupati.*, uraip.*,
-			urusj.mb_urusan_jenis_id, 
-	urus.mb_urusan_id, skpd.mb_skpd_id, 
-    prog.mb_program_id, keg.mb_kegiatan_id,
-    CONCAT(urusj.mb_urusan_jenis_kode,'.',urus.mb_urusan_kode,'.',skpd.mb_skpd_kode,'.',prog.mb_program_kode,'.',keg.mb_kegiatan_kode) AS keg_kode, keg.mb_kegiatan_nama
-				FROM mb_renja AS renj 
-				LEFT JOIN mb_tahun_anggaran AS ta ON renj.mb_tahun_anggaran_id = ta.mb_tahun_anggaran_id
-				LEFT JOIN mb_kegiatan AS keg ON renj.mb_kegiatan_id = keg.mb_kegiatan_id 
-				LEFT JOIN mb_program AS prog ON keg.mb_program_id = prog.mb_program_id 
-				LEFT JOIN mb_urusan_has_skpd AS hskpd ON prog.mb_urusan_has_skpd_id = hskpd.mb_urusan_has_skpd_id
-				LEFT JOIN mb_urusan AS urus ON hskpd.mb_urusan_id = urus.mb_urusan_id
-				LEFT JOIN mb_urusan_jenis AS urusj ON urus.mb_urusan_jenis_id = urusj.mb_urusan_jenis_id
-				LEFT JOIN mb_skpd AS skpd ON hskpd.mb_skpd_id = skpd.mb_skpd_id
-				LEFT JOIN mb_uraian_pekerjaan AS uraip ON renj.mb_renja_id = uraip.mb_renja_id
-				LEFT JOIN mb_lokasi_pekerjaan AS lok ON uraip.mb_uraian_pekerjaan_id = lok.mb_uraian_pekerjaan_id
-				LEFT JOIN mb_kelurahan_desa AS desa ON lok.mb_kelurahan_desa_id = desa.mb_kelurahan_desa_id
-				LEFT JOIN mb_kecamatan AS camat ON desa.mb_kecamatan_id = camat.mb_kecamatan_id
-				LEFT JOIN mb_kabupaten_kota AS bupati ON camat.mb_kabupaten_kota_id = bupati.mb_kabupaten_kota_id
-				WHERE ta.mb_tahun_anggaran_nama=:ta 
-					AND skpd.mb_skpd_id=:opd 
-					AND urusj.mb_urusan_jenis_id=:uj 
-					AND urus.mb_urusan_id=:urus
-					AND prog.mb_program_id=:prog
-				GROUP BY prog.mb_program_id")
+				urusj.*, 
+				urus.mb_urusan_id, skpd.mb_skpd_id,
+				prog.mb_program_id, keg.mb_kegiatan_id,
+				CONCAT(urusj.mb_urusan_jenis_kode,'.',urus.mb_urusan_kode,'.',skpd.mb_skpd_kode,'.',prog.mb_program_kode,'.',keg.mb_kegiatan_kode) AS keg_kode, keg.mb_kegiatan_nama
+					FROM mb_renja AS renj 
+					LEFT JOIN mb_tahun_anggaran AS ta ON renj.mb_tahun_anggaran_id = ta.mb_tahun_anggaran_id
+					LEFT JOIN mb_kegiatan AS keg ON renj.mb_kegiatan_id = keg.mb_kegiatan_id 
+					LEFT JOIN mb_program AS prog ON keg.mb_program_id = prog.mb_program_id 
+					LEFT JOIN mb_urusan_has_skpd AS hskpd ON prog.mb_urusan_has_skpd_id = hskpd.mb_urusan_has_skpd_id
+					LEFT JOIN mb_urusan AS urus ON hskpd.mb_urusan_id = urus.mb_urusan_id
+					LEFT JOIN mb_urusan_jenis AS urusj ON urus.mb_urusan_jenis_id = urusj.mb_urusan_jenis_id
+					LEFT JOIN mb_skpd AS skpd ON hskpd.mb_skpd_id = skpd.mb_skpd_id
+					LEFT JOIN mb_uraian_pekerjaan AS uraip ON renj.mb_renja_id = uraip.mb_renja_id
+					LEFT JOIN mb_lokasi_pekerjaan AS lok ON uraip.mb_uraian_pekerjaan_id = lok.mb_uraian_pekerjaan_id
+					LEFT JOIN mb_kelurahan_desa AS desa ON lok.mb_kelurahan_desa_id = desa.mb_kelurahan_desa_id
+					LEFT JOIN mb_kecamatan AS camat ON desa.mb_kecamatan_id = camat.mb_kecamatan_id
+					LEFT JOIN mb_kabupaten_kota AS bupati ON camat.mb_kabupaten_kota_id = bupati.mb_kabupaten_kota_id
+					WHERE ta.mb_tahun_anggaran_nama=:ta 
+						AND skpd.mb_skpd_id=:opd 
+						AND urusj.mb_urusan_jenis_id=:uj 
+						AND urus.mb_urusan_id=:urus
+						AND prog.mb_program_id=:prog
+					GROUP BY prog.mb_program_id")
 			->bindValue(':ta', $ta)
 			->bindValue(':opd', $id_skpd)
 			->bindValue(':uj', $id_jenis_urus)
