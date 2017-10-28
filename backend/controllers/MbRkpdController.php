@@ -33,6 +33,11 @@ class MbRkpdController extends Controller
 		}
 	}
 
+	public function actionTest()
+	{
+		return $this->render('_test');
+	}
+
 	public function actionExport($ext, $ta, $id_skpd)
 	{
 		switch ($ext) {
@@ -209,19 +214,26 @@ class MbRkpdController extends Controller
 									echo Html::endTag('tr');
 
 									$kegiatan = Rkpd::Kegiatan($ta, $id_skpd, $jenis['mb_urusan_jenis_id'], $urus['mb_urusan_id'], $prog['mb_program_id']);
-									$total = 0;
 									foreach ($kegiatan as $renj) {
-										$total = $total + $renj['mb_uraian_pekerjaan_vol'] * $renj['mb_uraian_pekerjaan_harga_satuan'];
+										$total = 0;
+										$wil = '';
+										$urais = 0;
+										$uraian = Rkpd::uraianPekerjaan($renj['mb_renja_id']);
+										foreach ($uraian as $value) {
+											$total = $total + $value['mb_uraian_pekerjaan_vol'] * $value['mb_uraian_pekerjaan_harga_satuan'];
+											$wil = $value['mb_kabupaten_nama'];
+											$urais = $value['mb_uraian_pekerjaan_pagu_tahun_maju'];
+										}
+
 										echo Html::beginTag('tr');
 											echo Html::tag('td', $renj['keg_kode']);
 											echo Html::tag('td', $renj['mb_kegiatan_nama']);
 											echo Html::tag('td', $renj['mb_renja_indikator_kegiatan']);
-											echo Html::tag('td', $renj['mb_kabupaten_nama']);
+											echo Html::tag('td', $wil);
 											echo Html::tag('td', $renj['mb_renja_target_capaian']);
-											//echo Html::tag('td', number_format($renj['mb_renja_pagu_indikatif'],0,',','.'));
 											echo Html::tag('td', number_format($total,0,',','.'));
 											echo Html::tag('td', $renj['mb_renja_target_capaian_thn_maju']);
-											echo Html::tag('td', number_format($renj['mb_uraian_pekerjaan_pagu_tahun_maju'],0,',','.'));
+											echo Html::tag('td', number_format($urais,0,',','.'));
 										echo Html::endTag('tr');
 									}
 								}

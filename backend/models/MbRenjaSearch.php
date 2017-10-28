@@ -98,6 +98,12 @@ class MbRenjaSearch extends MbRenja
             //->andFilterWhere(['like', 'LOWER(mb_skpd.mb_skpd_nama)', strtolower($this->mb_skpd_nama)]);
             ->andFilterWhere(['like', 'LOWER(mb_skpd.mb_skpd_id)', strtolower($this->mb_skpd_nama)]);
 
+        //echo "<pre>";
+        //print_r($query->createCommand()->getRawSql());
+        //print_r($query->createCommand()->sql);
+        //echo "</pre>";
+        //exit();
+
         return $dataProvider;
     }
 }
