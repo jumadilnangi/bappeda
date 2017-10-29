@@ -23,8 +23,6 @@ $form = ActiveForm::begin([
     //'options' => ['id' => 'test-form']
 ]);
 $this->registerJs($this->render('proses.js'), \yii\web\View::POS_READY);
-//$this->registerJs($js);
-//DialogAsset::register($this);
 echo Dialog::widget([
    'libName' => 'krajeeDialog',
    //'options => [], // default options
