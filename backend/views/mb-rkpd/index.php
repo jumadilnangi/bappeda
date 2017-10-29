@@ -13,10 +13,6 @@ use backend\models\customs\Rkpd;
 $this->title = 'RKPD';
 $this->params['breadcrumbs'][] = $this->title;
 
-$js = <<< JS
-    kvGridGroup('table_renja');
-JS;
-
 $form = ActiveForm::begin([
     //'action' => ['cari'],
     'id' => 'test-form',
@@ -27,7 +23,6 @@ $form = ActiveForm::begin([
     //'options' => ['id' => 'test-form']
 ]);
 $this->registerJs($this->render('proses.js'), \yii\web\View::POS_READY);
-$this->registerJs($this->render('group.js'), \yii\web\View::POS_READY);
 $this->registerJs($js);
 //DialogAsset::register($this);
 echo Dialog::widget([

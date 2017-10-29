@@ -33,11 +33,6 @@ class MbRkpdController extends Controller
 		}
 	}
 
-	public function actionTest()
-	{
-		return $this->render('_test');
-	}
-
 	public function actionExport($ext, $ta, $id_skpd)
 	{
 		switch ($ext) {
