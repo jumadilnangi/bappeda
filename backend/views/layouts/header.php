@@ -21,7 +21,7 @@ $this->registerJs('$(\'.profile\').initial();');
 					$itemsLeft = [
 						['label' => '<i class="fa fa-home"></i> Beranda', 'url' => ['/site/index'],],
 						[
-							'label' => '<i class="fa fa-suitcase"></i> Master Data',
+							'label' => '<i class="fa fa-suitcase"></i> RPJMD',
 							'items' => [
 								['label' => '<i class="fa fa-circle-o"></i> Visi', 'url' => ['/mb-rpjmd-visi/index'],],
 								['label' => '<i class="fa fa-circle-o"></i> Misi', 'url' => ['/mb-rpjmd-misi/index'],],
