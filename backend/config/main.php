@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => 'SIPPDA',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -55,6 +56,13 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+            ],
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-blue-light', //"skin-blue", "skin-black", "skin-red", "skin-yellow", "skin-purple", "skin-green", "skin-blue-light", "skin-black-light", "skin-red-light", "skin-yellow-light", "skin-purple-light", "skin-green-light"
+                ],
             ],
         ],
     ],
