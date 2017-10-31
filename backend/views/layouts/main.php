@@ -1,64 +1,51 @@
 <?php
 use yii\helpers\Html;
+use yii\bootstrap\Nav;
+//use yii\bootstrap\NavBar;
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+use backend\assets\AppAsset;
+use dmstr\web\AdminLteAsset;
+use dmstr\helpers\AdminLteHelper;
 
-
-if (Yii::$app->controller->action->id === 'login') { 
-/**
- * Do not use this code in your template. Remove it. 
- * Instead, use the code  $this->layout = '//main-login'; in your controller.
- */
+//if (Yii::$app->controller->action->id === 'login') {
+if (Yii::$app->user->isGuest) {
     echo $this->render(
         'main-login',
         ['content' => $content]
     );
 } else {
-
-    if (class_exists('backend\assets\AppAsset')) {
-        backend\assets\AppAsset::register($this);
-    } else {
-        app\assets\AppAsset::register($this);
-    }
-
-    dmstr\web\AdminLteAsset::register($this);
-
+    AppAsset::register($this);
+    AdminLteAsset::register($this);
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
     <?php $this->beginPage() ?>
     <!DOCTYPE html>
-    <html lang="<?= Yii::$app->language ?>">
+    <html lang="<?php echo Yii::$app->language;?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <?= Html::csrfMetaTags() ?>
-        <title><?= Html::encode($this->title) ?></title>
+        <?php echo Html::csrfMetaTags();?>
+        <title><?php echo Html::encode($this->title);?></title>
+        <link rel="shortcut icon" href="<?php echo Yii::$app->request->baseUrl; ?>/index.ico" type="image/x-icon" />
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
-    <?php $this->beginBody() ?>
-    <div class="wrapper">
+    <body class="hold-transition <?php echo AdminLteHelper::skinClass();?> layout-top-nav">
+        <div id="isi">
+            <?php $this->beginBody() ?>
 
-        <?= $this->render(
-            'header.php',
-            ['directoryAsset' => $directoryAsset]
-        ) ?>
+            <?php
+                echo $this->render(
+                    'header.php',
+                    ['directoryAsset' => $directoryAsset]
+                );
 
-        <?= $this->render(
-            'left.php',
-            ['directoryAsset' => $directoryAsset]
-        )
-        ?>
-
-        <?= $this->render(
-            'content.php',
-            ['content' => $content, 'directoryAsset' => $directoryAsset]
-        ) ?>
-
-    </div>
-
-    <?php $this->endBody() ?>
+                echo $this->render(
+                    'content.php',
+                    ['content' => $content, 'directoryAsset' => $directoryAsset]
+                );
+            ?>
+            <?php $this->endBody() ?>
+        </div>
     </body>
     </html>
     <?php $this->endPage() ?>
