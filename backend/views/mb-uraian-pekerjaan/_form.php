@@ -36,8 +36,7 @@ $form = ActiveForm::begin([
     <div class="box-body">
         <?php
             $_renja = isset($model->mb_renja_id) ? MbRenja::findOne($model->mb_renja_id)->mbKegiatan->mb_kegiatan_nama : (!empty($id_renja) ? MbRenja::findOne($id_renja)->mbKegiatan->mb_kegiatan_nama : '');
-            $model->mb_renja_id = isset($id_renja) ? $id_renja : $model->mb_renja_id;
-
+            //$model->mb_renja_id = isset($id_renja) ? $id_renja : $model->mb_renja_id;
             echo $form->field($model, 'mb_renja_id')->widget(Select2::classname(),[
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'initValueText' => $_renja,

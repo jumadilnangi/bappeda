@@ -22,7 +22,7 @@ $js = <<< JS
 JS;
 $this->registerJs($js, \yii\web\View::POS_READY);
 ?>
-<div class="box box-default">
+<div class="box box-primary">
     <div class="box-header with-border">
         <?php 
             echo Html::a('<i class="fa fa-plus"></i> Tambah', ['create'], ['class' => 'btn btn-success']).' '.
@@ -70,38 +70,14 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         //'attribute' => 'role'
                         'header' => 'Role',
                         'value' => function($temp) {
-                            $role = Yii::$app->authManager->getRolesByUser($temp->id);
-                            if (is_array($role) && $role != NULL) {
-                                return array_shift($role)->name;
+                            $getRole = Yii::$app->authManager->getRolesByUser($temp->id);
+                            if (is_array($getRole) && $getRole != NULL) {
+                                return array_shift($getRole)->name;
                             }
-                            //echo "<pre>";
-                            //print_r($role);
-                            //echo "</pre>";
                         },
                         'mergeHeader' => true,
                         'hAlign' => 'center',
                     ],
-                    // 'status',
-                    /*[
-                        'attribute' => 'status',
-                        'value' => function($model) {
-                            return $model->status == 10 ? 'Aktif' : 'Disable';
-                        },
-                        'filter' => Html::activeDropDownList(
-                            $searchModel, 
-                            'status', 
-                            [
-                                '0' => 'Disable', 
-                                '10' => 'Aktif'
-                            ],
-                            [
-                                'class'=>'form-control',
-                                'prompt' => 'All'
-                            ]
-                        ),
-                        'width' => '100px',
-                        'hAlign' => 'center'
-                    ],*/
                     [
                         'class' => ToggleColumn::className(),
                         'updateAction' => ['toggle-status'],
