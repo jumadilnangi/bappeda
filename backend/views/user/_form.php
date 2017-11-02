@@ -12,7 +12,7 @@ use app\models\AuthItem;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php $form = ActiveForm::begin(); ?>
-<div class="box box-success">
+<div class="box box-primary">
     <div class="box-header with-border">
         <?php echo Html::a('<i class="fa fa-reply"></i> Kembali', ['index'], ['class' => 'btn btn-warning']) ?>
         <?php echo Html::submitButton('<i class=\"fa fa-save\"></i>  Simpan', ['class' => 'btn btn-success']) ?>

@@ -14,7 +14,7 @@ class Renja extends MbRenja
 	public function rules()
     {
         return [
-            [['mb_tahun_anggaran_id', 'id_skpd', 'mb_kegiatan_id', 'mb_sasaran_id'], 'required'],
+            [['mb_tahun_anggaran_id', 'mb_kegiatan_id', 'mb_sasaran_id'], 'required'],
             [['mb_tahun_anggaran_id', 'mb_kegiatan_id', 'mb_sasaran_id'], 'integer'],
         ];
     }

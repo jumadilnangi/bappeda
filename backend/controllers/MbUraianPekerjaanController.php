@@ -16,6 +16,7 @@ use backend\models\customs\search\UraianPekerjaanSearch;
 use backend\models\customs\LokasiPekerjaan;
 use backend\models\customs\UraianPekerjaanHasStatus;
 
+use backend\models\MbLokasiPekerjaan;
 /**
  * MbUraianPekerjaanController implements the CRUD actions for MbUraianPekerjaan model.
  */
@@ -134,7 +135,7 @@ class MbUraianPekerjaanController extends Controller
         if ($model->load(Yii::$app->request->post()) && $modelLokasi->load(Yii::$app->request->post()) && $modelStatus->load(Yii::$app->request->post()) ) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if ($model->save()) {
+                if ($model->save(false)) {
                     $modelLokasi->mb_uraian_pekerjaan_id = $model->mb_uraian_pekerjaan_id;
                     $modelStatus->mb_uraian_pekerjaan_id = $model->mb_uraian_pekerjaan_id;
                     if ($modelLokasi->save() && $modelStatus->save()) {
@@ -221,7 +222,7 @@ class MbUraianPekerjaanController extends Controller
 
     protected function findModelStatus($id)
     {
-        if (($model = UraianPekerjaanHasStatus::findOne($id)) !== null) {
+        if (($model = UraianPekerjaanHasStatus::findOne(['mb_uraian_pekerjaan_id' => $id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -231,7 +232,7 @@ class MbUraianPekerjaanController extends Controller
 
     protected function findModelLokasi($id)
     {
-        if (($model = LokasiPekerjaan::findOne($id)) !== null) {
+        if (($model = MbLokasiPekerjaan::findOne(['mb_uraian_pekerjaan_id' => $id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
