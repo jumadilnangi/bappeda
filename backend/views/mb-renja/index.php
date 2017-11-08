@@ -13,11 +13,21 @@ use backend\models\MbTahunAnggaran;
 
 $this->title = 'Data Rencana Kerja';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<< JS
+    $(".btn-fresh").click(function(){
+        $.pjax.reload({container:'#grid_container'});
+    });
+JS;
+$this->registerJs($js, \yii\web\View::POS_READY);
 ?>
-<div class="box box-default">
+<div class="box box-primary">
     <div class="box-header with-border">
         <!--?= Html::button('Penyusunan Anggaran', ['value' => Url::to(['create']), 'class' => 'btn btn-danger','id'=>'modalButton']) ?-->
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>  Buat Rencana Kerja', ['create'], ['class' => 'btn btn-danger']) ?>
+        <?php 
+            echo Html::a('<i class="fa fa-plus" aria-hidden="true"></i>  Buat Rencana Kerja', ['create'], ['class' => 'btn btn-danger']).' '.
+                Html::button('<i class="fa fa-refresh"></i> Refresh', ['class' => 'btn btn-success btn-fresh']);
+        ?>
         <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
         </div>

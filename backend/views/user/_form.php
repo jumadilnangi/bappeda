@@ -28,6 +28,30 @@ use app\models\AuthItem;
 
             echo $form->field($model, 'password')->passwordInput();
 
+            //echo $form->field($model, 'skpd');
+            echo $form->field($model, 'skpd')->widget(Select2::classname(), [
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'options' => [
+                    'placeholder' => 'SKPD...',
+                    'id' => 'id_skpd',
+                ],
+                'pluginOptions' => [
+                    //'width' => '500px',
+                    'allowClear' => true,
+                    'language' => [
+                        'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+                    ],
+                    'ajax' => [
+                        'url' => Url::to(['data/getskpd']),
+                        'type' => 'POST',
+                        'dataType' => 'json',
+                        'delay' => 20,
+                        'data' => new JsExpression('function(cari){return { cari: cari.term, page: 30 }}'),
+                        'cache' => 'true'
+                    ],
+                ],
+            ]);
+
             echo $form->field($model, 'role')->widget(Select2::classname(),[
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'options' => ['placeholder' => 'Pilih Role User..',],

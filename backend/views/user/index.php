@@ -8,8 +8,8 @@ use kartik\grid\GridView;
 use kartik\grid\EditableColumn;
 
 use backend\models\AuthAssignment;
-use backend\models\Prodi;
-use backend\models\RefJenjangPendidikan;
+use backend\models\MbSkpd;
+use common\models\UserAkses;
 
 
 $this->title = 'Manajemen User';
@@ -36,7 +36,7 @@ $this->registerJs($js, \yii\web\View::POS_READY);
         <?php 
             echo GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+                //'filterModel' => $searchModel,
                 'pjax' => true,
                 'pjaxSettings' => [
                     'neverTimeout'=>true,
@@ -66,6 +66,15 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         'format' => 'email',
                         'width' => '200px'
                     ],
+                    //'skpd_id',
+                    [
+                        'attribute' => 'skpd_id',
+                        'header' => 'SKPD',//'value' => 'idAkses.idSkpd.mb_skpd_nama'
+                        'value' => function($model) {
+                            return (empty($model->idAkses->skpd_id)) ? 'Semua SKPD' : $model->idAkses->idSkpd->mb_skpd_nama;
+                        }
+                        
+                    ],
                     [
                         //'attribute' => 'role'
                         'header' => 'Role',
@@ -78,6 +87,21 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         'mergeHeader' => true,
                         'hAlign' => 'center',
                     ],
+                    // 'created_at',
+                    [
+                        'attribute' => 'created_at',
+                        //'label' => 'Create At'
+                        'format' => ['date', 'php:Y-m-d h:s:d'],
+                        'width' => '200px'
+                    ],
+                    // 'updated_at',
+                    // [
+                    //     'attribute' => 'updated_at',
+                    //     'format' => ['date', 'php:Y-m-d h:s:d'],
+                    //     'width' => '200px'
+                    // ],
+                    // 'created_by',
+                    // 'updated_by',
                     [
                         'class' => ToggleColumn::className(),
                         'updateAction' => ['toggle-status'],
@@ -101,29 +125,22 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         ),
                         'width' => '150px'
                     ],
-                    // 'created_at',
-                    [
-                        'attribute' => 'created_at',
-                        //'label' => 'Create At'
-                        'format' => ['date', 'php:Y-m-d h:s:d'],
-                        'width' => '200px'
-                    ],
-                    // 'updated_at',
-                    // [
-                    //     'attribute' => 'updated_at',
-                    //     'format' => ['date', 'php:Y-m-d h:s:d'],
-                    //     'width' => '200px'
-                    // ],
-                    // 'created_by',
-                    // 'updated_by',
-                    [
+                    /*[
                         'class' => 'kartik\grid\ActionColumn',
-                        //'template' => '{update} {delete}',
-                        'template' => '{delete}',
+                        'template' => '{update_skpd} {delete}',
+                        //'template' => '{delete}',
                         'buttons' => [
                             //'update' => function($url, $model) {
                             //    $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
                             //    return Html::a($icon, $url);
+                            //},
+                            //'update_skpd' => function($url, $model) {
+                            //    $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+                            //    $options = [
+                            //        'title' => 'Edit SKPD',
+                            //        'aria-label' => 'Edit SKPD',
+                            //    ];
+                            //    return Html::a($icon, $url, $options);
                             //},
                             'delete' => function($url, $model) {
                                 $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
@@ -131,6 +148,8 @@ $this->registerJs($js, \yii\web\View::POS_READY);
 
                                 if ($idUser != $model->id) {
                                     return Html::a($icon, $url, [
+                                        'title' => 'Hapus',
+                                        'aria-label' => 'Hapus',
                                         'data-confirm' => 'Anda yakin menghapus data ini?',
                                         'data-method' => 'post',
                                         'data-pjax' => '0',
@@ -140,7 +159,7 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                                 }
                             },
                         ],
-                    ],
+                    ],*/
                 ],
                 'layout' => '<div class="table-responsive">{items}</div>
                                     <div class="pull-left">{summary}</div>

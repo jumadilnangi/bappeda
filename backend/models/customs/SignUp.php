@@ -4,8 +4,8 @@ namespace backend\models\customs;
 
 use Yii;
 use yii\base\Model;
-use frontend\models\RegisterForm;
-use frontend\models\UserAkses;
+//use frontend\models\RegisterForm;
+//use common\models\UserAkses;
 //use backend\models\MbLokasiPekerjaan;
 use frontend\models\SignupForm;
 
@@ -18,6 +18,7 @@ class SignUp extends SignupForm
 {
 	public $role;
 	public $status;
+    public $skpd;
 
 	public function rules()
     {
@@ -40,9 +41,23 @@ class SignUp extends SignupForm
             ['status', 'required'],
             ['status', 'integer'],
 
+            ['skpd', 'trim'],
+            ['skpd', 'required'],
+            ['skpd', 'integer'],
+
             ['role', 'trim'],
             ['role', 'required'],
             ['role', 'string', 'min' => 3],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'verifyCode' => 'Verification Code',
+            'skpd' => 'SKPD',
+            'role' => 'Role',
+            'status' => 'Status',
         ];
     }
 

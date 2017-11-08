@@ -89,8 +89,39 @@ class DataController extends Controller
 		\Yii::$app->response->format = Response::FORMAT_JSON;
 		$cari = $this->_request->post('cari');
 		$limit = $this->_request->post('page',10);
+
+		$query = '';
+		$paramCari = '';
+		$_idSession = Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id'];
+
+		if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+			$query = "SELECT renja.mb_renja_id AS id, giat.mb_kegiatan_nama AS text
+					FROM mb_renja AS renja
+					JOIN mb_kegiatan AS giat ON renja.mb_kegiatan_id = giat.mb_kegiatan_id
+					JOIN mb_program AS prog ON giat.mb_program_id = prog.mb_program_id
+					JOIN mb_urusan_has_skpd AS hskpd ON prog.mb_urusan_has_skpd_id = hskpd.mb_urusan_has_skpd_id
+					WHERE hskpd.mb_skpd_id = $_idSession AND
+						(giat.mb_kegiatan_kode LIKE :cari
+						OR giat.mb_kegiatan_nama LIKE :cari)
+					LIMIT :batas";
+			$paramCari = '%'.strtolower($cari).'%';
+		} else {
+			$query = "SELECT ren.mb_renja_id AS id, keg.mb_kegiatan_nama AS text
+					FROM mb_renja AS ren
+					JOIN mb_kegiatan AS keg USING(mb_kegiatan_id)
+					JOIN mb_program AS prog USING(mb_program_id)
+					WHERE keg.mb_kegiatan_kode LIKE :cari
+						OR keg.mb_kegiatan_nama LIKE :cari
+					LIMIT :batas";
+			$paramCari = '%'.strtolower($cari).'%';
+		}
+
+		$queryStruk = $this->_db->createCommand($query)
+			->bindValue(':cari', $paramCari)
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
 		
-		$queryStruk = $this->_db->createCommand("SELECT ren.mb_renja_id AS id, keg.mb_kegiatan_nama AS text
+		/*$queryStruk = $this->_db->createCommand("SELECT ren.mb_renja_id AS id, keg.mb_kegiatan_nama AS text
 				FROM mb_renja AS ren
 				JOIN mb_kegiatan AS keg USING(mb_kegiatan_id)
 				JOIN mb_program AS prog USING(mb_program_id)
@@ -99,7 +130,7 @@ class DataController extends Controller
 				LIMIT :batas")
 			->bindValue(':cari', '%'.strtolower($cari).'%')
 			->bindValue(':batas', (int)$limit)
-			->queryAll();
+			->queryAll();*/
 
 		$out['results'] = $queryStruk;
 		return $out;
@@ -203,12 +234,25 @@ class DataController extends Controller
 		\Yii::$app->response->format = Response::FORMAT_JSON;
 		$cari = $this->_request->post('cari');
 		$limit = $this->_request->post('page',10);
+		$query = '';
+		$paramCari = '';
 		
-		$querySkpd = $this->_db->createCommand("SELECT mb_skpd_id AS id, mb_skpd_nama AS text
-				FROM mb_skpd
-				WHERE LOWER(mb_skpd_nama) LIKE :cari
-				LIMIT :batas")
-			->bindValue(':cari', '%'.strtolower($cari).'%')
+		if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+			$query = "SELECT mb_skpd_id AS id, mb_skpd_nama AS text
+					FROM mb_skpd
+					WHERE mb_skpd_id = :cari
+					LIMIT :batas";
+			$paramCari = Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id'];
+		} else {
+			$query = "SELECT mb_skpd_id AS id, mb_skpd_nama AS text
+					FROM mb_skpd
+					WHERE LOWER(mb_skpd_nama) LIKE :cari
+					LIMIT :batas";
+			$paramCari = '%'.strtolower($cari).'%';
+		}
+		
+		$querySkpd = $this->_db->createCommand($query)
+			->bindValue(':cari', $paramCari)
 			->bindValue(':batas', (int)$limit)
 			->queryAll();
 

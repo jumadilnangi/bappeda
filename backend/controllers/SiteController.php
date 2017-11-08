@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\UserAkses;
 
 /**
  * Site controller
@@ -70,12 +71,21 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $session = Yii::$app->session;
+        //Yii::$app->session[Yii::$app->components['session']['name']]['id_smt'])
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $_akses = UserAkses::findOne(['user_id' => Yii::$app->user->getId()]);
+            $akses = $_akses ? $_akses->skpd_id : '';
+
+            $session[Yii::$app->components['session']['name']] = ['skpd_id' => $akses];
+            //echo "<pre>";
+            //print_r($akses);
+            //echo "</pre>";
             return $this->goBack();
         } else {
             return $this->render('login', [
