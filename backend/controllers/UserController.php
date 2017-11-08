@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
+use common\models\UserAkses;
 use backend\models\customs\User;
 use backend\models\customs\search\UserSearch;
 
@@ -67,10 +68,38 @@ class UserController extends Controller
     {
         $model = new SignUp();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            /*if ($user = $model->signup()) {
+                $_akses = new UserAkses();
+
+                $_akses->user_id = $user->id;
+                $_akses->skpd_id = $model->skpd;
+                $_akses->save(false);
+
                 Yii::$app->session->setFlash('success', 'User baru berhasil ditambahkan.');
                 return $this->redirect(['/user']);
+            }*/
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($user = $model->signup()) {
+                    $_akses = new UserAkses();
+
+                    $_akses->user_id = $user->id;
+                    $_akses->skpd_id = $model->skpd;
+                    if ($_akses->save(false)) {
+                        $transaction->commit();
+                        Yii::$app->session->setFlash('success', 'User baru berhasil ditambahkan.');
+                    } else {
+                        $transaction->rollBack();
+                        Yii::$app->session->setFlash('error','Terjadi kesalahan, User baru tidak bisa disimpan');
+                    }
+                    //return $this->redirect(['/user']);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. User baru tidak bisa disimpan');
+                //return $this->redirect(['index']);
             }
+            return $this->redirect(['/user']);
         }
 
         return $this->render('create', [
@@ -130,11 +159,6 @@ class UserController extends Controller
                 Yii::$app->session->setFlash('error','Terjadi kesalahan, User tidak berhasil dihapus');
             }
         } catch (\Exception $e) {
-            //echo Yii::error($e->getMessage(), __METHOD__);
-            //echo "<pre>";
-            //print_r($e);
-            //echo "</pre>";
-            //exit();
             $transaction->rollBack();
             Yii::$app->session->setFlash('error','Rollback transaction, User tidak berhasil dihapus');
         }

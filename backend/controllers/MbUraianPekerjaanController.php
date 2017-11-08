@@ -57,6 +57,13 @@ class MbUraianPekerjaanController extends Controller
         $searchModel = new UraianPekerjaanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+            $dataProvider->query->andFilterWhere([
+                'mb_skpd.mb_skpd_id' => Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']
+                //'mb_skpd.mb_skpd_id' => Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']
+            ]);
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

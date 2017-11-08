@@ -10,4 +10,8 @@ use common\models\User As YiiUser;
 */
 class User extends YiiUser
 {
+	public function getIdAkses()
+    {
+        return $this->hasOne(\common\models\UserAkses::className(), ['user_id' => 'id']);
+    }
 }

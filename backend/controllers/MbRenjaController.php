@@ -48,6 +48,13 @@ class MbRenjaController extends Controller
     {
         $searchModel = new MbRenjaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->orderBy('mb_skpd.mb_skpd_id');
+        
+        if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+            $dataProvider->query->andFilterWhere([
+                'mb_skpd.mb_skpd_id' => Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']
+            ]);
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -74,15 +81,15 @@ class MbRenjaController extends Controller
             //return $this->redirect(['view', 'id' => $model->mb_renja_id]);
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if ($model->save()) {
+                if ($model->save(false)) {
                     $transaction->commit();
                     Yii::$app->session->setFlash('success','Data berhasil disimpan');
                     return $this->redirect(['index']);
                 } else {
-                    //echo "<pre>";
-                    //print_r($model->getErrors());
-                    //echo "</pre>";
-                    //exit();
+                    echo "<pre>";
+                    print_r($model->getErrors());
+                    echo "</pre>";
+                    exit();
                     $transaction->rollBack();
                     Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
                     return $this->redirect(['index']);
@@ -122,28 +129,24 @@ class MbRenjaController extends Controller
         $modelProgram = new Program();
         $modelKegiatan = new Kegiatan();
         $modelPrioritas = new Prioritas();
-
-        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_renja_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'modelUrusan' => $modelUrusan,
-                'modelSkpd' => $modelSkpd,
-                'modelProgram' => $modelProgram,
-                'modelKegiatan' => $modelKegiatan,
-                'modelPrioritas' => $modelPrioritas,
-            ]);
-        }*/
+        
         if ($model->load(Yii::$app->request->post())) {
             //return $this->redirect(['view', 'id' => $model->mb_renja_id]);
+            //echo "<pre>";
+            //print_r(Yii::$app->request->post());
+            //echo "</pre>";
+            //exit();
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if ($model->save()) {
+                if ($model->save(false)) {
                     $transaction->commit();
                     Yii::$app->session->setFlash('success','Data berhasil disimpan');
                     return $this->redirect(['index']);
                 } else {
+                    //echo "<pre>";
+                    //print_r($model->getErrors());
+                    //echo "</pre>";
+                    //exit();
                     $transaction->rollBack();
                     Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
                     return $this->redirect(['index']);
@@ -292,12 +295,29 @@ class MbRenjaController extends Controller
 
     public function getHasSkpd($id='')
     {
-        $querySkpd = Yii::$app->db->createCommand("SELECT 
-                    hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
-                FROM mb_urusan_has_skpd AS hs
-                JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
-                WHERE hs.mb_urusan_id = :cari")
-            ->bindValue(':cari', $id)
+        $query = '';
+        $paramCari = '';
+        $_id = $id == '' ? 0 : $id;
+
+        if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+            $query = "SELECT 
+                        hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
+                    FROM mb_urusan_has_skpd AS hs
+                    JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
+                    WHERE hs.mb_urusan_id = $_id AND 
+                        hs.mb_skpd_id = :cari";
+            $paramCari = Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id'];
+        } else {
+            $query = "SELECT 
+                        hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
+                    FROM mb_urusan_has_skpd AS hs
+                    JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
+                    WHERE hs.mb_urusan_id = :cari";
+            $paramCari = $id;
+        }
+
+        $querySkpd = Yii::$app->db->createCommand($query)
+            ->bindValue(':cari', $paramCari)
             ->queryAll();
         return $querySkpd;
     }
@@ -311,7 +331,7 @@ class MbRenjaController extends Controller
         $searchModel = new UraianPekerjaanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andFilterWhere([
-            'mb_renja_id' => $id
+            'mb_uraian_pekerjaan.mb_renja_id' => $id
         ]);
 
         //echo "<pre>";

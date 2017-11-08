@@ -12,6 +12,7 @@ use backend\models\customs\User;
  */
 class UserSearch extends User
 {
+    public $skpd_id;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
+            [['username', 'skpd_id', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
         ];
     }
 
@@ -42,6 +43,8 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find();
+
+        $query->joinWith('idAkses');
 
         // add conditions that should always apply here
 
