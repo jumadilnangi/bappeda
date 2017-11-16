@@ -7,16 +7,16 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\MbRekeningKelompokSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Mb Rekening Kelompoks';
+$this->title = 'Data Kelompok Rekening ';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-rekening-kelompok-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Mb Rekening Kelompok', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('+ Kelompok Rekening', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

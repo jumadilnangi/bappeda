@@ -6,13 +6,13 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbRekeningJenis */
 
-$this->title = $model->mb_rekening_jenis_id;
-$this->params['breadcrumbs'][] = ['label' => 'Mb Rekening Jenis', 'url' => ['index']];
+$this->title = $model->mb_rekening_jenis_nama;
+$this->params['breadcrumbs'][] = ['label' => 'Data Jenis Rekening', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-rekening-jenis-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->mb_rekening_jenis_id], ['class' => 'btn btn-primary']) ?>
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'mb_rekening_jenis_id',
-            'mb_rekening_kelompok_id',
+            'mbRekeningKelompok.mb_rekening_kelompok_nama',
             'mb_rekening_jenis_kode',
             'mb_rekening_jenis_nama',
             'mb_rekening_jenis_ket',

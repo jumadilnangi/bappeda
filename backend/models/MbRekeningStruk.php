@@ -42,10 +42,10 @@ class MbRekeningStruk extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_struk_id' => 'ID struk Rekening ',
-            'mb_rekening_struk_kode' => 'Kode Struk Rekening',
-            'mb_rekening_struk_nama' => 'Nama Struk Rekening ',
-            'mb_rekening_struk_ket' => 'Keterangan Struk Rekening ',
+            'mb_rekening_struk_id' => 'ID struk ',
+            'mb_rekening_struk_kode' => 'Kode Struk ',
+            'mb_rekening_struk_nama' => 'Nama Struk ',
+            'mb_rekening_struk_ket' => 'Keterangan',
         ];
     }
 

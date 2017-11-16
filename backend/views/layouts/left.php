@@ -166,23 +166,12 @@ use mdm\admin\components\Helper;
             ];
 
             echo Menu::widget([
-                'options' => ['class' => 'sidebar-menu'],
+                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => Helper::filter($leftMenu)
             ]);
         ?>
 
-        <!--?= dmstr\widgets\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu'],
-                'items' => [
-                    
-                   
-                    
-                    
-                ],
-            ]
-        ) ?-->
-
+       
     </section>
 
 </aside>
