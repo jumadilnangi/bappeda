@@ -32,7 +32,7 @@ class MbSasaran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_prioritas_id'], 'required'],
+            [['mb_prioritas_id', 'mb_sasaran_nama'], 'required'],
             [['mb_prioritas_id'], 'integer'],
             [['mb_sasaran_nama'], 'string', 'max' => 345],
             [['mb_sasaran_ket'], 'string', 'max' => 45],
@@ -46,10 +46,10 @@ class MbSasaran extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_sasaran_id' => 'Sasaran',
-            'mb_prioritas_id' => 'Mb Prioritas ID',
-            'mb_sasaran_nama' => 'Sasaran ',
-            'mb_sasaran_ket' => 'Mb Sasaran Ket',
+            'mb_sasaran_id' => 'ID Sasaran',
+            'mb_prioritas_id' => 'Prioritas',
+            'mb_sasaran_nama' => 'Sasaran',
+            'mb_sasaran_ket' => 'Keterangan',
         ];
     }
 

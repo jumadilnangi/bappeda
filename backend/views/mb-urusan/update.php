@@ -5,17 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbUrusan */
 
-$this->title = 'Update Mb Urusan: ' . $model->mb_urusan_id;
-$this->params['breadcrumbs'][] = ['label' => 'Mb Urusans', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->mb_urusan_id, 'url' => ['view', 'id' => $model->mb_urusan_id]];
+$this->title = 'Update Data Urusan: ' . $model->mb_urusan_nama;
+$this->params['breadcrumbs'][] = ['label' => 'Data Urusan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
+
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
 ?>
-<div class="mb-urusan-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

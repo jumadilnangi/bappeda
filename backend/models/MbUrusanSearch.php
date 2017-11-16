@@ -56,17 +56,18 @@ class MbUrusanSearch extends MbUrusan
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query ->joinWith('mbUrusanJenis');
+        //$query ->joinWith('mbUrusanJenis');
         // grid filtering conditions
         $query->andFilterWhere([
             'mb_urusan_id' => $this->mb_urusan_id,
+            'mb_urusan_jenis_id' => $this->mb_urusan_jenis_id,
             
         ]);
 
         $query->andFilterWhere(['like', 'mb_urusan_kode', $this->mb_urusan_kode])
             ->andFilterWhere(['like', 'mb_urusan_nama', $this->mb_urusan_nama])
-            ->andFilterWhere(['like', 'mb_urusan_ket', $this->mb_urusan_ket])
-            ->andFilterWhere(['like', 'mb_urusan_jenis.mb_urusan_jenis_nama', $this->mb_urusan_jenis_id]);
+            ->andFilterWhere(['like', 'mb_urusan_ket', $this->mb_urusan_ket]);
+            //->andFilterWhere(['like', 'mb_urusan_jenis.mb_urusan_jenis_nama', $this->mb_urusan_jenis_id]);
 
         return $dataProvider;
     }

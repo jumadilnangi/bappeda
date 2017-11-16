@@ -31,7 +31,7 @@ class MbKelurahanDesa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_kecamatan_id'], 'required'],
+            [['mb_kecamatan_id', 'mb_kelurahan_desa_kode', 'mb_kelurahan_desa_nama'], 'required'],
             [['mb_kecamatan_id'], 'integer'],
             [['mb_kelurahan_desa_kode'], 'string', 'max' => 45],
             [['mb_kelurahan_desa_nama'], 'string', 'max' => 145],
@@ -46,9 +46,9 @@ class MbKelurahanDesa extends \yii\db\ActiveRecord
     {
         return [
             'mb_kelurahan_desa_id' => 'Mb Kelurahan Desa ID',
-            'mb_kecamatan_id' => 'Mb Kecamatan ID',
-            'mb_kelurahan_desa_kode' => 'Mb Kelurahan Desa Kode',
-            'mb_kelurahan_desa_nama' => 'Mb Kelurahan Desa Nama',
+            'mb_kecamatan_id' => 'Kecamatan',
+            'mb_kelurahan_desa_kode' => 'Kode Kelurahan  /Desa',
+            'mb_kelurahan_desa_nama' => 'Nama Kelurahan / Desa',
         ];
     }
 

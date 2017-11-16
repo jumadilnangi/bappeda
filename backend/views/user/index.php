@@ -49,7 +49,7 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                         return ['style' => 'background-color: #f56954;'];
                     } else {
                         //return ['class' => 'success'];
-                        return '';
+                        return [];
                     }
                 },
                 'columns' => [
