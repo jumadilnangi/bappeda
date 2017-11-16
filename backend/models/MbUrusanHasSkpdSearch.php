@@ -62,13 +62,14 @@ class MbUrusanHasSkpdSearch extends MbUrusanHasSkpd
         $query->andFilterWhere([
             'mb_urusan_has_skpd_id' => $this->mb_urusan_has_skpd_id,
            // 'mb_skpd_id' => $this->mb_skpd_id,
+            'mb_urusan_has_skpd.mb_urusan_id' => $this->mb_urusan_id,
             'mb_urusan_has_skpd_mulai' => $this->mb_urusan_has_skpd_mulai,
             'mb_urusan_has_skpd_akhir' => $this->mb_urusan_has_skpd_akhir,
         ]);
 
         $query->andFilterWhere(['like', 'mb_urusan_has_skpd_sk', $this->mb_urusan_has_skpd_sk])
             ->andFilterWhere(['like', 'mb_urusan_has_skpd_ket', $this->mb_urusan_has_skpd_ket])
-                ->andFilterWhere(['like', 'mb_urusan.mb_urusan_nama', $this->mb_urusan_id])
+                //->andFilterWhere(['like', 'mb_urusan.mb_urusan_nama', $this->mb_urusan_id])
                 ->andFilterWhere(['like', 'mb_skpd.mb_skpd_nama', $this->mb_skpd_id]);
 
         return $dataProvider;

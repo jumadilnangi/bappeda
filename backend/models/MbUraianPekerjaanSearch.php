@@ -44,6 +44,12 @@ class MbUraianPekerjaanSearch extends MbUraianPekerjaan
     {
         $query = MbUraianPekerjaan::find();
 
+        $query->joinWith('mbRenja');
+        $query->joinWith('mbRenja.mbKegiatan');
+        $query->joinWith('mbRenja.mbKegiatan.mbProgram');
+        $query->joinWith('mbRenja.mbKegiatan.mbProgram.mbUrusanHasSkpd');
+        $query->joinWith('mbRenja.mbKegiatan.mbProgram.mbUrusanHasSkpd.mbSkpd');
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

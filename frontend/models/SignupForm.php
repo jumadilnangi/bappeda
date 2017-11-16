@@ -36,6 +36,14 @@ class SignupForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'role' => 'Role',
+            'status' => 'Status',
+        ];
+    }
+
     /**
      * Signs user up.
      *

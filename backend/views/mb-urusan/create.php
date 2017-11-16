@@ -9,13 +9,8 @@ use yii\helpers\Html;
 $this->title = 'Buat Data Urusan';
 $this->params['breadcrumbs'][] = ['label' => 'Data Urusan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
 ?>
-<div class="mb-urusan-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

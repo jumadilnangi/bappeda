@@ -37,8 +37,17 @@ class MbSkpdHasRekeningRincian extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [[ 
+                'mb_skpd_has_rekening_rincian_ta', 
+                'mb_urusan_has_skpd_id', 
+                'mb_rekening_rincian_id',
+                'mb_skpd_has_rekening_rincian_penjabaran',
+                'mb_skpd_has_rekening_rincian_vol',
+                'mb_skpd_has_rekening_rincian_satuan',
+                'mb_skpd_has_rekening_rincian_harga'], 'required'
+            ],
             [['mb_skpd_has_rekening_rincian_ta', 'mb_skpd_has_rekening_rincian_created_at'], 'safe'],
-            [['mb_urusan_has_skpd_id', 'mb_rekening_rincian_id'], 'required'],
+            //[['mb_urusan_has_skpd_id', 'mb_rekening_rincian_id'], 'required'],
             [['mb_urusan_has_skpd_id', 'mb_rekening_rincian_id', 'mb_skpd_has_rekening_rincian_vol'], 'integer'],
             [['mb_skpd_has_rekening_rincian_penjabaran'], 'string'],
             [['mb_skpd_has_rekening_rincian_harga'], 'number'],

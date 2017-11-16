@@ -3,11 +3,22 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\MbRenja;
-use backend\models\MbRenjaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+
+use backend\models\MbRenja;
+use backend\models\MbRenjaSearch;
+use backend\models\customs\Renja;
+use backend\models\customs\Urusan;
+use backend\models\customs\UrusanHasSkpd;
+use backend\models\customs\Program;
+use backend\models\customs\Kegiatan;
+use backend\models\customs\Prioritas;
+use backend\models\customs\UraianPekerjaan;
+//use backend\models\MbUraianPekerjaanSearch;
+use backend\models\customs\search\UraianPekerjaanSearch;
 
 /**
  * MbRenjaController implements the CRUD actions for MbRenja model.
@@ -37,22 +48,17 @@ class MbRenjaController extends Controller
     {
         $searchModel = new MbRenjaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->orderBy('mb_skpd.mb_skpd_id');
+        
+        if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+            $dataProvider->query->andFilterWhere([
+                'mb_skpd.mb_skpd_id' => Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']
+            ]);
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single MbRenja model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
 
@@ -63,13 +69,48 @@ class MbRenjaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new MbRenja();
+        $model = new Renja();
+        $modelUrusan = new Urusan();
+        $modelSkpd = new UrusanHasSkpd();
+        $modelProgram = new Program();
+        $modelKegiatan = new Kegiatan();
+        $modelPrioritas = new Prioritas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_renja_id]);
+        //if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            //return $this->redirect(['view', 'id' => $model->mb_renja_id]);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save(false)) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                    return $this->redirect(['index']);
+                } else {
+                    echo "<pre>";
+                    print_r($model->getErrors());
+                    echo "</pre>";
+                    exit();
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                    return $this->redirect(['index']);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                //echo "<pre>";
+                //print_r($e);
+                //echo "</pre>";
+                //exit();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+                return $this->redirect(['index']);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'modelUrusan' => $modelUrusan,
+                'modelSkpd' => $modelSkpd,
+                'modelProgram' => $modelProgram,
+                'modelKegiatan' => $modelKegiatan,
+                'modelPrioritas' => $modelPrioritas,
             ]);
         }
     }
@@ -83,12 +124,50 @@ class MbRenjaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_renja_id]);
+        $modelUrusan = new Urusan();
+        $modelSkpd = new UrusanHasSkpd();
+        $modelProgram = new Program();
+        $modelKegiatan = new Kegiatan();
+        $modelPrioritas = new Prioritas();
+        
+        if ($model->load(Yii::$app->request->post())) {
+            //return $this->redirect(['view', 'id' => $model->mb_renja_id]);
+            //echo "<pre>";
+            //print_r(Yii::$app->request->post());
+            //echo "</pre>";
+            //exit();
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save(false)) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                    return $this->redirect(['index']);
+                } else {
+                    //echo "<pre>";
+                    //print_r($model->getErrors());
+                    //echo "</pre>";
+                    //exit();
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                    return $this->redirect(['index']);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                //echo "<pre>";
+                //print_r($e);
+                //echo "</pre>";
+                //exit();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+                return $this->redirect(['index']);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelUrusan' => $modelUrusan,
+                'modelSkpd' => $modelSkpd,
+                'modelProgram' => $modelProgram,
+                'modelKegiatan' => $modelKegiatan,
+                'modelPrioritas' => $modelPrioritas,
             ]);
         }
     }
@@ -101,9 +180,172 @@ class MbRenjaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
 
+        //return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Data berhasil dihapus');
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak berhasil dihapus');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
+        }
         return $this->redirect(['index']);
+    }
+
+    public function actionSuburusan()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getHasSkpd($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubprogram()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getProgram($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubkegiatan()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getKegiatan($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionSubsasaran()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getSasaran($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function getSasaran($id='')
+    {
+        $queryProgram = Yii::$app->db->createCommand("SELECT mb_sasaran_id AS id, 
+                mb_sasaran_nama AS name
+            FROM mb_sasaran
+            WHERE mb_prioritas_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryProgram;
+    }
+
+    public function getKegiatan($id='')
+    {
+        $queryProgram = Yii::$app->db->createCommand("SELECT mb_kegiatan_id AS id, 
+                    CONCAT(mb_kegiatan_kode, ' - ', mb_kegiatan_nama) AS name
+                FROM mb_kegiatan
+                WHERE mb_program_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryProgram;
+    }
+
+    public function getProgram($id='')
+    {
+        $queryProgram = Yii::$app->db->createCommand("SELECT mb_program_id AS id,
+                    CONCAT(mb_program_kode,' - ', mb_program_nama) AS name
+                FROM mb_program
+                WHERE mb_urusan_has_skpd_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryProgram;
+    }
+
+    public function getHasSkpd($id='')
+    {
+        $query = '';
+        $paramCari = '';
+        $_id = $id == '' ? 0 : $id;
+
+        if (Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id']!='') {
+            $query = "SELECT 
+                        hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
+                    FROM mb_urusan_has_skpd AS hs
+                    JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
+                    WHERE hs.mb_urusan_id = $_id AND 
+                        hs.mb_skpd_id = :cari";
+            $paramCari = Yii::$app->session[Yii::$app->components['session']['name']]['skpd_id'];
+        } else {
+            $query = "SELECT 
+                        hs.mb_urusan_has_skpd_id AS id, sk.mb_skpd_nama AS name
+                    FROM mb_urusan_has_skpd AS hs
+                    JOIN mb_skpd AS sk ON hs.mb_skpd_id = sk.mb_skpd_id
+                    WHERE hs.mb_urusan_id = :cari";
+            $paramCari = $id;
+        }
+
+        $querySkpd = Yii::$app->db->createCommand($query)
+            ->bindValue(':cari', $paramCari)
+            ->queryAll();
+        return $querySkpd;
+    }
+
+    public function actionDetailrenja()
+    {
+        $id = Yii::$app->request->post('expandRowKey');
+        $model = $this->findModel($id);
+
+        //$modelUraian = UraianPekerjaan::findOne(['mb_renja_id' => $id]);
+        $searchModel = new UraianPekerjaanSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere([
+            'mb_uraian_pekerjaan.mb_renja_id' => $id
+        ]);
+
+        //echo "<pre>";
+        //print_r($model);
+        //echo "</pre>";
+        return $this->renderPartial('_detailrenja', [
+            'model' => $model,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTambahuraian($id='')
+    {
+        echo "Test";
     }
 
     /**
@@ -115,7 +357,7 @@ class MbRenjaController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = MbRenja::findOne($id)) !== null) {
+        if (($model = Renja::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

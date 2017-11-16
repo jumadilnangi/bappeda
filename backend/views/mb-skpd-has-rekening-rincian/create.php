@@ -6,16 +6,17 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbSkpdHasRekeningRincian */
 
-$this->title = 'Rincian Anggaran';
+$this->title = 'Tambah Rincian Anggaran';
 $this->params['breadcrumbs'][] = ['label' => 'Data Penyusunan Anggaran', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+	'modelStruk' => $modelStruk,
+	'modelUrusan' => $modelUrusan,
+	'modelKelompok' => $modelKelompok,
+	'modelJenis' => $modelJenis,
+	'modelObyek' => $modelObyek,
+	'modelRinci' => $modelRinci
+]);
 ?>
-<div class="mb-skpd-has-rekening-rincian-create">
-
-  
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

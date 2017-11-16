@@ -31,7 +31,7 @@ class MbKecamatan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_kabupaten_kota_id'], 'required'],
+            [['mb_kabupaten_kota_id', 'mb_kecamatan_kode', 'mb_kecamatan_nama'], 'required'],
             [['mb_kabupaten_kota_id'], 'integer'],
             [['mb_kecamatan_kode'], 'string', 'max' => 45],
             [['mb_kecamatan_nama'], 'string', 'max' => 145],
@@ -46,7 +46,7 @@ class MbKecamatan extends \yii\db\ActiveRecord
     {
         return [
             'mb_kecamatan_id' => 'Mb Kecamatan ID',
-            'mb_kabupaten_kota_id' => 'Kabupaten ',
+            'mb_kabupaten_kota_id' => 'Kabupaten',
             'mb_kecamatan_kode' => 'Kode Kecamatan ',
             'mb_kecamatan_nama' => 'Nama Kecamatan ',
         ];

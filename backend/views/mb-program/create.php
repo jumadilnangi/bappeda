@@ -6,16 +6,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbProgram */
 
-$this->title = 'Create Mb Program';
-$this->params['breadcrumbs'][] = ['label' => 'Mb Programs', 'url' => ['index']];
+$this->title = 'Tambah Program';
+$this->params['breadcrumbs'][] = ['label' => 'Data Program', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
+
 ?>
-<div class="mb-program-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

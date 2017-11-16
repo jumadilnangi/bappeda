@@ -29,7 +29,8 @@ class MbTahunAnggaran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_tahun_anggaran_id'], 'required'],
+            //[['mb_tahun_anggaran_id'], 'required'],
+            [['mb_tahun_anggaran_nama'], 'required'],
             [['mb_tahun_anggaran_id'], 'integer'],
             [['mb_tahun_anggaran_nama'], 'safe'],
             [['mb_tahun_anggaran_ket'], 'string', 'max' => 45],
