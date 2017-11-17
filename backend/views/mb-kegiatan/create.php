@@ -9,12 +9,9 @@ use yii\helpers\Html;
 $this->title = 'Tambah Kegiatan';
 $this->params['breadcrumbs'][] = ['label' => 'Data Kegiatan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
+
 ?>
-<div class="mb-kegiatan-create">
-
-   
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

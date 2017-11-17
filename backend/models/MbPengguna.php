@@ -18,7 +18,7 @@ use Yii;
  * @property MbPegawai $mbPegawai
  * @property MbSkpd $mbSkpd
  */
-class MbPengguna extends \yii\db\ActiveRecord
+class MbPengguna extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -57,6 +57,26 @@ class MbPengguna extends \yii\db\ActiveRecord
             'mb_pengguna_level' => 'Mb Pengguna Level',
             'mb_pengguna_ket' => 'Mb Pengguna Ket',
         ];
+    }
+
+    public static function findIdentity($id)
+    {
+        return static::findOne(['mb_penggunacol' => $id]);
+    }
+
+    public static function findByUsername($username)
+    {
+        return static::findOne(['mb_pengguna_username' => $username]);
+    }
+
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->mb_pengguna_password);
+    }
+
+    public function setPassword($password)
+    {
+        $this->mb_pengguna_password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**

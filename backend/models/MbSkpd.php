@@ -33,6 +33,7 @@ class MbSkpd extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['mb_skpd_kode', 'mb_skpd_nama'], 'required'],
             [['mb_skpd_kode', 'mb_skpd_singkatan', 'mb_skpd_ket'], 'string', 'max' => 45],
             [['mb_skpd_nama'], 'string', 'max' => 245],
         ];

@@ -30,6 +30,7 @@ class MbPrioritas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['mb_prioritas_no_urut', 'mb_prioritas_nama'], 'required'],
             [['mb_prioritas_no_urut'], 'integer'],
             [['mb_prioritas_nama'], 'string', 'max' => 345],
             [['mb_prioritas_ket'], 'string', 'max' => 45],
@@ -42,10 +43,10 @@ class MbPrioritas extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_prioritas_id' => 'Mb Prioritas ID',
-            'mb_prioritas_nama' => 'Mb Prioritas Nama',
-            'mb_prioritas_no_urut' => 'Mb Prioritas No Urut',
-            'mb_prioritas_ket' => 'Mb Prioritas Ket',
+            'mb_prioritas_id' => 'ID Prioritas',
+            'mb_prioritas_nama' => 'Nama Prioritas',
+            'mb_prioritas_no_urut' => 'Nomor Urut',
+            'mb_prioritas_ket' => 'Keterangan',
         ];
     }
 

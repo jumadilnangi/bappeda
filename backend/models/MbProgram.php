@@ -32,7 +32,7 @@ class MbProgram extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_urusan_has_skpd_id'], 'required'],
+            [['mb_urusan_has_skpd_id', 'mb_program_kode', 'mb_program_nama'], 'required'],
             [['mb_urusan_has_skpd_id'], 'integer'],
             [['mb_program_kode', 'mb_program_ket'], 'string', 'max' => 45],
             [['mb_program_nama'], 'string', 'max' => 145],
@@ -46,10 +46,10 @@ class MbProgram extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_program_id' => 'ID Program',
-            'mb_urusan_has_skpd_id' => 'Urusan',
-            'mb_program_kode' => 'Kode',
-            'mb_program_nama' => 'Nama',
+            'mb_program_id' => 'Program',
+            'mb_urusan_has_skpd_id' => 'Urusan Dan SKPD',
+            'mb_program_kode' => 'Kode Program',
+            'mb_program_nama' => 'Nama Program',
             'mb_program_ket' => 'Keterangan',
         ];
     }

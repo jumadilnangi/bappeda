@@ -5,17 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbUrusanHasSkpd */
 
-$this->title = 'Update Mb Urusan Has Skpd: ' . $model->mb_urusan_has_skpd_id;
-$this->params['breadcrumbs'][] = ['label' => 'Mb Urusan Has Skpds', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->mb_urusan_has_skpd_id, 'url' => ['view', 'id' => $model->mb_urusan_has_skpd_id]];
+$this->title = 'Update Data Urusan dan SKPD';
+$this->params['breadcrumbs'][] = ['label' => 'Data Urusan dan SKPD', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
+
 ?>
-<div class="mb-urusan-has-skpd-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

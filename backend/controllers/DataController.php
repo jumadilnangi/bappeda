@@ -279,4 +279,48 @@ class DataController extends Controller
 		$out['results'] = $queryRek;
 		return $out;
 	}
+
+	public function actionGetprogram()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryProg = $this->_db->createCommand("SELECT mb_program_id AS id, 
+					CONCAT(mb_program_kode,' - ',mb_program_nama) AS text
+				FROM mb_program
+				WHERE mb_program_kode LIKE :cari OR
+					LOWER(mb_program_nama) LIKE :cari
+				ORDER BY mb_program_kode
+				LIMIT :batas")
+			->bindValue(':cari', '%'.strtolower($cari).'%')
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryProg;
+		return $out;
+	}
+
+	public function actionGeturusanskpd()
+	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$cari = $this->_request->post('cari');
+		$limit = $this->_request->post('page',10);
+		
+		$queryProg = $this->_db->createCommand("SELECT mb_urusan_has_skpd_id AS id,
+					CONCAT(urus.mb_urusan_nama,' / ',skpd.mb_skpd_nama) AS text
+				FROM mb_urusan_has_skpd AS uskpd
+				JOIN mb_urusan AS urus ON uskpd.mb_urusan_id = urus.mb_urusan_id
+				JOIN mb_skpd AS skpd ON uskpd.mb_skpd_id = skpd.mb_skpd_id
+				WHERE LOWER(urus.mb_urusan_nama) LIKE :cari OR
+					LOWER(skpd.mb_skpd_nama) LIKE :cari
+				ORDER BY urus.mb_urusan_id
+				LIMIT :batas")
+			->bindValue(':cari', '%'.strtolower($cari).'%')
+			->bindValue(':batas', (int)$limit)
+			->queryAll();
+
+		$out['results'] = $queryProg;
+		return $out;
+	}
 }

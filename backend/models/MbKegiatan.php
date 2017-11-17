@@ -32,8 +32,8 @@ class MbKegiatan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_program_id'], 'required'],
-            [['mb_program_id'], 'integer'],
+            [['mb_program_id', 'mb_kegiatan_kode', 'mb_kegiatan_nama'], 'required'],
+            [['mb_kegiatan_id', 'mb_program_id'], 'integer'],
             [['mb_kegiatan_kode', 'mb_kegiatan_ket'], 'string', 'max' => 45],
             [['mb_kegiatan_nama'], 'string', 'max' => 345],
             [['mb_program_id'], 'exist', 'skipOnError' => true, 'targetClass' => MbProgram::className(), 'targetAttribute' => ['mb_program_id' => 'mb_program_id']],
@@ -46,11 +46,11 @@ class MbKegiatan extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_kegiatan_id' => ' ID Kegiatan',
+            'mb_kegiatan_id' => 'ID Kegiatan',
             'mb_program_id' => 'Program',
-            'mb_kegiatan_kode' => 'Kode',
-            'mb_kegiatan_nama' => 'Nama',
-            'mb_kegiatan_ket' => 'Ket.',
+            'mb_kegiatan_kode' => 'Kode Kegiatan',
+            'mb_kegiatan_nama' => 'Nama Kegiatan',
+            'mb_kegiatan_ket' => 'Keterangan',
         ];
     }
 
