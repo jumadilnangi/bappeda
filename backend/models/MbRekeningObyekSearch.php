@@ -23,6 +23,11 @@ class MbRekeningObyekSearch extends MbRekeningObyek
         ];
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * @inheritdoc
      */

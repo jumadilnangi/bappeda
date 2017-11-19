@@ -1,36 +1,106 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use kartik\grid\GridView;
 
+use backend\models\MbRekeningObyek;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\MbRekeningRincianSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Mb Rekening Rincians';
+$this->title = 'Rincian Rekening';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<< JS
+    $(".btn-fresh").click(function(){
+        $.pjax.reload({container:'#grid_container'});
+    });
+JS;
+$this->registerJs($js, \yii\web\View::POS_READY);
 ?>
-<div class="mb-rekening-rincian-index">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <?php 
+            echo Html::a('<i class="fa fa-plus"></i> Tambah', ['create'], ['class' => 'btn btn-success']).' '.
+                Html::button('<i class="fa fa-history" aria-hidden="true"></i> Refesh', ['class' => 'btn btn-primary btn-fresh']);
+        ?>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?php 
+            echo GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'pjax' => true,
+                'pjaxSettings' => [
+                    'neverTimeout'=>true,
+                    'options' => [
+                        'id'=>'grid_container',
+                    ],
+                ],
+                'columns' => [
+                    ['class' => 'kartik\grid\SerialColumn'],
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    // 'mb_rekening_rincian_id',
+                    // 'mb_rekening_obyek_id',
+                    [
+                        'attribute' => 'mb_rekening_obyek_id',
+                        'value' => function($model){
+                            return $model->mbRekeningObyek->mb_rekening_obyek_kode.' - '.$model->mbRekeningObyek->mb_rekening_obyek_nama;
+                        },
+                        'filterType' => GridView::FILTER_SELECT2,
+                        'filter'=> ArrayHelper::map(
+                            MbRekeningObyek::find()
+                                ->select('mb_rekening_obyek_id, mb_rekening_obyek_nama')
+                                ->asArray()
+                                ->all(),
+                            'mb_rekening_obyek_id', 
+                            'mb_rekening_obyek_nama'
+                        ),
+                        'filterWidgetOptions' => [
+                            'theme' => 'bootstrap',
+                            'pluginOptions' => [
+                                'allowClear'=>true,
+                            ],
+                        ],
+                        'filterInputOptions' => ['placeholder'=>'Obyek Rekening..'],
+                    ],
+                    // 'mb_rekening_rincian_kode',
+                    [
+                        'attribute' => 'mb_rekening_rincian_kode',
+                        'label' => 'Kode',
+                        'width' => '50px',
+                        'hAlign' => 'center',
+                    ],
+                    'mb_rekening_rincian_nama',
+                    'mb_rekening_rincian_ket',
 
-    <p>
-        <?= Html::a('Create Mb Rekening Rincian', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'mb_rekening_rincian_id',
-            'mb_rekening_obyek_id',
-            'mb_rekening_rincian_kode',
-            'mb_rekening_rincian_nama',
-            'mb_rekening_rincian_ket',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                        'template' => '{update} {delete}',
+                        'buttons' => [
+                            'update' => function($url, $model) {
+                                $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+                                return Html::a($icon, $url);
+                            },
+                            'delete' => function($url, $model) {
+                                $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
+                                return Html::a($icon, $url, [
+                                    'data-confirm' => 'Anda yakin menghapus data ini?',
+                                    'data-method' => 'post',
+                                    'data-pjax' => '0',
+                                ]);
+                            },
+                        ]
+                    ],
+                ],
+                'layout' => '<div class="table-responsive">{items}</div>
+                                    <div class="pull-left">{summary}</div>
+                                    <div class="pull-right">{pager}</div>',
+            ]); 
+        ?>
+    </div>
 </div>

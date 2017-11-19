@@ -23,6 +23,11 @@ class MbRekeningJenisSearch extends MbRekeningJenis
         ];
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * @inheritdoc
      */

@@ -32,7 +32,7 @@ class MbRekeningJenis extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_rekening_kelompok_id'], 'required'],
+            [['mb_rekening_kelompok_id', 'mb_rekening_jenis_kode', 'mb_rekening_jenis_nama'], 'required'],
             [['mb_rekening_kelompok_id', 'mb_rekening_jenis_kode'], 'integer'],
             [['mb_rekening_jenis_nama'], 'string', 'max' => 145],
             [['mb_rekening_jenis_ket'], 'string', 'max' => 45],
@@ -46,11 +46,11 @@ class MbRekeningJenis extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_jenis_id' => 'Mb Rekening Jenis ID',
-            'mb_rekening_kelompok_id' => 'Mb Rekening Kelompok ID',
-            'mb_rekening_jenis_kode' => 'Mb Rekening Jenis Kode',
-            'mb_rekening_jenis_nama' => 'Mb Rekening Jenis Nama',
-            'mb_rekening_jenis_ket' => 'Mb Rekening Jenis Ket',
+            'mb_rekening_jenis_id' => 'ID Rekening Jenis',
+            'mb_rekening_kelompok_id' => 'Kelompok Rekening',
+            'mb_rekening_jenis_kode' => 'Kode Jenis Rekening',
+            'mb_rekening_jenis_nama' => 'Jenis Rekening',
+            'mb_rekening_jenis_ket' => 'Keterangan',
         ];
     }
 

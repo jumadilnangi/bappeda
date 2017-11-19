@@ -32,7 +32,7 @@ class MbRekeningRincian extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_rekening_obyek_id'], 'required'],
+            [['mb_rekening_obyek_id', 'mb_rekening_rincian_kode', 'mb_rekening_rincian_nama'], 'required'],
             [['mb_rekening_obyek_id'], 'integer'],
             [['mb_rekening_rincian_kode'], 'string', 'max' => 2],
             [['mb_rekening_rincian_nama'], 'string', 'max' => 145],
@@ -48,10 +48,10 @@ class MbRekeningRincian extends \yii\db\ActiveRecord
     {
         return [
             'mb_rekening_rincian_id' => 'ID Rincian Rekening',
-            'mb_rekening_obyek_id' => 'Obyek ',
-            'mb_rekening_rincian_kode' => 'Kode Rincian ',
-            'mb_rekening_rincian_nama' => 'Nama Rincian ',
-            'mb_rekening_rincian_ket' => 'Ket',
+            'mb_rekening_obyek_id' => 'Obyek Rekening',
+            'mb_rekening_rincian_kode' => 'Kode Rincian Rekening',
+            'mb_rekening_rincian_nama' => 'Nama Rincian Rekening',
+            'mb_rekening_rincian_ket' => 'Keterangan',
         ];
     }
 
