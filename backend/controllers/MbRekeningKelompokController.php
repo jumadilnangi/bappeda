@@ -8,6 +8,7 @@ use backend\models\MbRekeningKelompokSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * MbRekeningKelompokController implements the CRUD actions for MbRekeningKelompok model.
@@ -20,6 +21,18 @@ class MbRekeningKelompokController extends Controller
     public function behaviors()
     {
         return [
+            
+            'access'=>[
+              'class'=> AccessControl::className(),
+              'only'=>  ['create','update','delete','index'],
+              'rules'=> [
+                  [
+                      'allow'=>true,
+                      'roles'=>['@']
+                  ],
+              ]
+            ],
+            
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\MbRekeningRincian */
 
 $this->title = $model->mb_rekening_rincian_id;
-$this->params['breadcrumbs'][] = ['label' => 'Mb Rekening Rincians', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Data Rincian Rekening ', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-rekening-rincian-view">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'mb_rekening_rincian_id',
-            'mb_rekening_obyek_id',
+            'mbRekeningObyek.mb_rekening_obyek_nama',
             'mb_rekening_rincian_kode',
             'mb_rekening_rincian_nama',
             'mb_rekening_rincian_ket',

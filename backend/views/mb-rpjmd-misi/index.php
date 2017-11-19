@@ -45,10 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'mb_rpjmd_misi_id',
+            //'mb_rpjmd_misi_id',
             'mbRpjmdVisi.mb_rpjmd_visi_isi',
             'mb_rpjmd_misi_isi:ntext',
-            'mb_rpjmd_misi_ket',
+            //'mb_rpjmd_misi_ket',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

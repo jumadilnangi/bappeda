@@ -10,17 +10,19 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\MbRpjmdTujuanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Mb Rpjmd Tujuans';
+$this->title = 'Data Tujuan';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mb-rpjmd-tujuan-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+ 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
      <p>
-        <?= Html::button('Tambah Tujuan', ['value' => Url::to('index.php?r=mb-rpjmd-tujuan/create'), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
-    </p>
+        <?= Html::button('Tambah Tujuan', ['value' => Url::to(['create']), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
+   
+    
+     </p>
     
      <?php 
         Modal::begin([
@@ -43,7 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'mb_rpjmd_tujuan_id',
+           // 'mb_rpjmd_tujuan_id',
+            'mbRpjmdMisi.mbRpjmdVisi.mb_rpjmd_visi_isi',
             'mbRpjmdMisi.mb_rpjmd_misi_isi',
             'mb_tujuan_isi:ntext',
             'mb_tujuan_ket',

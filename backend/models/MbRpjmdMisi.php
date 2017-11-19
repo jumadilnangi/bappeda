@@ -47,7 +47,7 @@ class MbRpjmdMisi extends \yii\db\ActiveRecord
         return [
             'mb_rpjmd_misi_id' => 'Misi ',
             'mb_rpjmd_visi_id' => 'Visi ',
-            'mb_rpjmd_misi_isi' => 'Visi',
+            'mb_rpjmd_misi_isi' => 'Misi',
             'mb_rpjmd_misi_ket' => 'Keterangan',
         ];
     }
