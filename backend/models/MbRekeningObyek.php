@@ -32,7 +32,7 @@ class MbRekeningObyek extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_rekening_jenis_id'], 'required'],
+            [['mb_rekening_jenis_id', 'mb_rekening_obyek_kode', 'mb_rekening_obyek_nama'], 'required'],
             [['mb_rekening_jenis_id'], 'integer'],
             [['mb_rekening_obyek_kode'], 'string', 'max' => 2],
             [['mb_rekening_obyek_nama'], 'string', 'max' => 145],
@@ -47,10 +47,10 @@ class MbRekeningObyek extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_obyek_id' => 'Id Obyek  ',
-            'mb_rekening_jenis_id' => 'Jenis  ',
-            'mb_rekening_obyek_kode' => 'Kode Obyek ',
-            'mb_rekening_obyek_nama' => 'Nama Obyek ',
+            'mb_rekening_obyek_id' => 'ID Obyek Rekening',
+            'mb_rekening_jenis_id' => 'Jenis Rekening',
+            'mb_rekening_obyek_kode' => 'Kode Obyek Rekening',
+            'mb_rekening_obyek_nama' => 'Nama Obyek Rekening',
             'mb_rekening_obyek_ket' => 'Keterangan',
         ];
     }

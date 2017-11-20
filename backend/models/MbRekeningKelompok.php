@@ -32,7 +32,7 @@ class MbRekeningKelompok extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mb_rekening_struk_id'], 'required'],
+            [['mb_rekening_struk_id', 'mb_rekening_kelompok_kode', 'mb_rekening_kelompok_nama'], 'required'],
             [['mb_rekening_struk_id', 'mb_rekening_kelompok_kode'], 'integer'],
             [['mb_rekening_kelompok_nama'], 'string', 'max' => 145],
             [['mb_rekening_kelompok_ket'], 'string', 'max' => 45],
@@ -46,10 +46,10 @@ class MbRekeningKelompok extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_kelompok_id' => 'ID Kelompok ',
-            'mb_rekening_struk_id' => 'Struk  ',
-            'mb_rekening_kelompok_kode' => 'Kode Kelompok ',
-            'mb_rekening_kelompok_nama' => 'Nama Kelompok ',
+            'mb_rekening_kelompok_id' => 'Mb Rekening Kelompok ID',
+            'mb_rekening_struk_id' => 'Struk Rekening',
+            'mb_rekening_kelompok_kode' => 'Kode Rekening Kelompok',
+            'mb_rekening_kelompok_nama' => 'Nama Rekening Kelompok',
             'mb_rekening_kelompok_ket' => 'Keterangan',
         ];
     }

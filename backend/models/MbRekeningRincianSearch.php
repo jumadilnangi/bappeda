@@ -23,6 +23,11 @@ class MbRekeningRincianSearch extends MbRekeningRincian
         ];
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * @inheritdoc
      */

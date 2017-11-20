@@ -30,9 +30,11 @@ class MbRekeningStruk extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['mb_rekening_struk_kode', 'mb_rekening_struk_nama'], 'required'],
             [['mb_rekening_struk_kode'], 'string', 'max' => 2],
             [['mb_rekening_struk_nama'], 'string', 'max' => 145],
             [['mb_rekening_struk_ket'], 'string', 'max' => 45],
+            [['mb_rekening_struk_kode'], 'unique']
         ];
     }
 
@@ -42,9 +44,9 @@ class MbRekeningStruk extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'mb_rekening_struk_id' => 'ID struk ',
-            'mb_rekening_struk_kode' => 'Kode Struk ',
-            'mb_rekening_struk_nama' => 'Nama Struk ',
+            'mb_rekening_struk_id' => 'ID struk Rekening ',
+            'mb_rekening_struk_kode' => 'Kode Struk Rekening',
+            'mb_rekening_struk_nama' => 'Nama Struk Rekening ',
             'mb_rekening_struk_ket' => 'Keterangan',
         ];
     }

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $js = <<< JS
     $(".btn-fresh").click(function(){
-        $.pjax.reload({container:'#user_container'});
+        $.pjax.reload({container:'#grid_container'});
     });
 JS;
 $this->registerJs($js, \yii\web\View::POS_READY);
@@ -36,7 +36,7 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                 'pjaxSettings' => [
                     'neverTimeout'=>true,
                     'options' => [
-                        'id'=>'user_container',
+                        'id'=>'grid_container',
                     ],
                 ],
                 'columns' => [

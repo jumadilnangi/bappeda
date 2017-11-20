@@ -7,15 +7,10 @@ use yii\helpers\Html;
 /* @var $model backend\models\MbRekeningObyek */
 
 $this->title = 'Tambah Obyek Rekening';
-$this->params['breadcrumbs'][] = ['label' => 'Data Obyek Rekening ', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Obyek Rekening', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
 ?>
-<div class="mb-rekening-obyek-create">
-
-  
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

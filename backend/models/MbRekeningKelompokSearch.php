@@ -23,6 +23,11 @@ class MbRekeningKelompokSearch extends MbRekeningKelompok
         ];
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * @inheritdoc
      */

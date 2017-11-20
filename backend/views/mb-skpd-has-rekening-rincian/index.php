@@ -33,7 +33,11 @@ $js = <<< JS
             "url": url,
             "replace": false
         })
-    })
+    });
+
+    $(".btn-fresh").click(function(){
+        $.pjax.reload({container:'#grid_container'});
+    });
 JS;
 
 $this->registerJs($js, \yii\web\View::POS_READY);
@@ -41,8 +45,10 @@ $this->registerJs($js, \yii\web\View::POS_READY);
 
 <div class="box box-default">
     <div class="box-header with-border">
-        <!--?= Html::button('Penyusunan Anggaran', ['value' => Url::to(['create']), 'class' => 'btn btn-danger','id'=>'modalButton']) ?-->
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>  Penyusunan Anggaran', ['create'], ['class' => 'btn btn-danger']) ?>
+        <?php 
+            echo Html::a('<i class="fa fa-plus" aria-hidden="true"></i>  Penyusunan Anggaran', ['create'], ['class' => 'btn btn-danger']).' '.
+                Html::button('<i class="fa fa-history" aria-hidden="true"></i> Refesh', ['class' => 'btn btn-primary btn-fresh']);
+        ?>
         <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
         </div>
@@ -52,6 +58,12 @@ $this->registerJs($js, \yii\web\View::POS_READY);
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'pjax' => true,
+                'pjaxSettings' => [
+                    'neverTimeout'=>true,
+                    'options' => [
+                        'id'=>'grid_container',
+                    ],
+                ],
                 'columns' => [
                     ['class' => 'kartik\grid\SerialColumn'],
                     [
