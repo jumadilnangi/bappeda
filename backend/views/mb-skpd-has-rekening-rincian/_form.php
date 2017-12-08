@@ -66,7 +66,7 @@ $form = ActiveForm::begin([
 			</tr>
 			<tr>
 				<td align="right" style="padding-right: 20px;">
-					<?= Html::activeLabel($modelUrusan, 'mb_urusan_id', ['label'=>'Urusan', 'class'=>'control-label']) ?>
+					<?= Html::activeLabel($modelUrusan, 'mb_urusan_id', ['label'=>'Unit Kerja', 'class'=>'control-label']) ?>
 				</td>
 				<td width="350px">
 					<?php
@@ -85,7 +85,7 @@ $form = ActiveForm::begin([
 							'theme' => Select2::THEME_BOOTSTRAP,
 							'initValueText' => $_value['name'],
 							'options' => [
-								'placeholder' => 'Urusan..',
+								'placeholder' => 'Unit Kerja..',
 								'id' => 'id_urusan',
 							],
 							'pluginOptions' => [
@@ -107,7 +107,7 @@ $form = ActiveForm::begin([
 					?>
 				</td>
 				<td width="100px" align="right" style="padding-right: 20px;">
-					<?= Html::activeLabel($model, 'mb_urusan_has_skpd_id', ['label'=>'SKPD', 'class'=>'control-label']) ?>
+					<?= Html::activeLabel($model, 'mb_urusan_has_skpd_id', ['label'=>'OPD', 'class'=>'control-label']) ?>
 				</td>
 				<td width="350px">
 					<?php

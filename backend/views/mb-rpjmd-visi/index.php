@@ -1,10 +1,8 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
-use yii\bootstrap\Modal;
 use yii\helpers\Url;
+use yii\helpers\Html;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\MbRpjmdVisiSearch */
@@ -12,47 +10,82 @@ use yii\helpers\Url;
 
 $this->title = 'Visi';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<< JS
+    $(".btn-fresh").click(function(){
+        $.pjax.reload({container:'#grid_container'});
+    });
+JS;
+$this->registerJs($js, \yii\web\View::POS_READY);
 ?>
-<div class="mb-rpjmd-visi-index">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <?php 
+            echo Html::a('<i class="fa fa-plus"></i> Tambah', ['create'], ['class' => 'btn btn-success']).' '.
+                Html::button('<i class="fa fa-history" aria-hidden="true"></i> Refesh', ['class' => 'btn btn-primary btn-fresh']);
+        ?>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?php 
+            echo GridView::widget([
+                'dataProvider' => $dataProvider,
+                //'filterModel' => $searchModel,
+                'pjax' => true,
+                'pjaxSettings' => [
+                    'neverTimeout'=>true,
+                    'options' => [
+                        'id'=>'grid_container',
+                    ],
+                ],
+                'columns' => [
+                    ['class' => 'kartik\grid\SerialColumn'],
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    //'mb_rpjmd_visi_id',
+                    //'mb_rpjmd_visi_isi:ntext',
+                    [
+                        'attribute' => 'mb_rpjmd_visi_isi',
+                        'format' => 'paragraphs',
+                    ],
+                    // 'mb_rpjmd_visi_awal',
+                    [
+                        'attribute' => 'mb_rpjmd_visi_awal',
+                        'label' => 'Awal Berlaku',
+                        'width' => '50px',
+                    ],
+                    //'mb_rpjmd_visi_akhir',
+                    [
+                        'attribute' => 'mb_rpjmd_visi_akhir',
+                        'label' => 'Akhir Berlaku',
+                        'width' => '50px'
+                    ],
+                    'mb_rpjmd_visi_ket',
 
-   
-    
-    <p>
-        <?= Html::button('Tambah Visi', ['value' => Url::to(['create']), 'class' => 'btn btn-success','id'=>'modalButton']) ?>
-    </p>
-    
-     <?php 
-        Modal::begin([
-            'header' => '<h4>Form Isian Visi</h4>',
-            'id' => 'modal',
-            'size' => 'modal-lg',
-            'options' => [
-            'tabindex' => false
-            ],
-        ]);
-        echo "<div id='modalContent'> </div>";
-        Modal::end();
-    ?>
-    
-    <?php    Pjax::begin(); ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'mb_rpjmd_visi_id',
-            'mb_rpjmd_visi_isi:ntext',
-            'mb_rpjmd_visi_awal',
-            'mb_rpjmd_visi_akhir',
-            'mb_rpjmd_visi_ket',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-    
-       <?php    Pjax::end(); ?>
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                        'template' => '{update} {delete}',
+                        'buttons' => [
+                            'update' => function($url, $model) {
+                                $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+                                return Html::a($icon, $url);
+                            },
+                            'delete' => function($url, $model) {
+                                $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
+                                return Html::a($icon, $url, [
+                                    'data-confirm' => 'Anda yakin menghapus data ini?',
+                                    'data-method' => 'post',
+                                    'data-pjax' => '0',
+                                ]);
+                            },
+                        ]
+                    ],
+                ],
+                'layout' => '<div class="table-responsive">{items}</div>
+                                    <div class="pull-left">{summary}</div>
+                                    <div class="pull-right">{pager}</div>',
+            ]); 
+        ?>
+    </div>
 </div>
