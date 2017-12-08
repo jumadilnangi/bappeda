@@ -1,44 +1,29 @@
 <?php
 
+use common\components\bundles\highchart\HighchartAssets;
+
 /* @var $this yii\web\View */
 
-$this->title = 'Halaman Administrator';
+$this->title = 'Dashboard';
+
+HighchartAssets::register($this);
+
+$var = [
+    'catChart' => $skpd,
+    'json' => $json,
+];
+$this->registerJs('var out = '.$json.';');
+$this->registerJs('var vars = '.json_encode($var).';');
+$this->registerJs($this->render('chart.js'), \yii\web\View::POS_READY);
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Selamat Datang!</h1>
-
-        <p class="lead">Di Sistem Informasi Perencanaan Pembangunan Daerah Kabupaten Muna Barat.</p>
-
-        <p><a class="btn btn-lg btn-success" href="?r=mb-renja">Buat Dokomen Perencanan </a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2> Admin Bappeda</h2>
-
-                <p>Panduan Admin Bappeda</p>
-
-                <p><a class="btn btn-default" href="£">Download &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2> Admin SKPD</h2>
-
-                <p>Panduan Admin SKPD</p>
-
-                <p><a class="btn btn-default" href="$/">Download &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Tentang Aplikasi</h2>
-
-                <p>Tentang Aplikasi.</p>
-
-                <p><a class="btn btn-default" href="$">Tentang Aplikasi&raquo;</a></p>
-            </div>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title"><i class="fa fa-bar-chart-o fa-fw"></i> Grafik</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
         </div>
-
+    </div>
+    <div class="box-body">
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
 </div>

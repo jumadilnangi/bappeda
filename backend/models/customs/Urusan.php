@@ -19,7 +19,7 @@ class Urusan extends MbUrusan
 	public function attributeLabels()
 	{
 		return [
-			'mb_urusan_id' => 'Urusan',
+			'mb_urusan_id' => 'Unit Kerja',
 			'mb_urusan_jenis_id' => 'Jenis Urusan',
 			'mb_urusan_kode' => 'Kode Urusan',
 			'mb_urusan_nama' => 'Nama Urusan',

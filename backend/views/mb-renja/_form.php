@@ -73,7 +73,7 @@ $form = ActiveForm::begin([
 				'theme' => Select2::THEME_BOOTSTRAP,
 				'initValueText' => $_value['name'],
 				'options' => [
-					'placeholder' => 'Urusan..',
+					'placeholder' => 'Unit Kerja..',
 					'id' => 'id_urusan',
 				],
 				'pluginOptions' => [
@@ -110,7 +110,7 @@ $form = ActiveForm::begin([
 				'options' => ['id' => 'id_skpd'],
 				'select2Options'=>[
 					'theme' => Select2::THEME_BOOTSTRAP,
-					'options' => ['placeholder' => 'Pilih SKPD...'],
+					'options' => ['placeholder' => 'Pilih OPD...'],
 					'pluginOptions'=>[
 						'allowClear'=>true,
 						//'width' => '400px'
