@@ -6,16 +6,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbRpjmdSasaran */
 
-$this->title = 'Create Mb Rpjmd Sasaran';
-$this->params['breadcrumbs'][] = ['label' => 'Mb Rpjmd Sasarans', 'url' => ['index']];
+$this->title = 'Tambah Sasaran';
+$this->params['breadcrumbs'][] = ['label' => 'Data Sasaran', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+	'id_tujuan' => $id_tujuan
+]);
+
 ?>
-<div class="mb-rpjmd-sasaran-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
