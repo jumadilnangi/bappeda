@@ -6,16 +6,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MbRpjmdVisi */
 
-$this->title = 'Buat Visi';
+$this->title = 'Tambah Visi';
 $this->params['breadcrumbs'][] = ['label' => 'Data Visi', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+]);
+
 ?>
-<div class="mb-rpjmd-visi-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>

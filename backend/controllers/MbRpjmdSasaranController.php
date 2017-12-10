@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use backend\models\customs\Sasaran;
+use backend\models\MbIndikatorKinerja;
+use backend\models\MbIndikatorKinerjaSearch;
 /**
  * MbRpjmdSasaranController implements the CRUD actions for MbRpjmdSasaran model.
  */
@@ -45,31 +48,33 @@ class MbRpjmdSasaranController extends Controller
     }
 
     /**
-     * Displays a single MbRpjmdSasaran model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new MbRpjmdSasaran model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_tujuan='')
     {
-        $model = new MbRpjmdSasaran();
+        $model = new Sasaran();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_rpjmd_sasaran_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+            }
+            return $this->redirect(['index']);
         } else {
-            return $this->renderAjax('create', [
+            return $this->render('create', [
                 'model' => $model,
+                'id_tujuan' => $id_tujuan
             ]);
         }
     }
@@ -84,8 +89,21 @@ class MbRpjmdSasaranController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_rpjmd_sasaran_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+            }
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -101,9 +119,44 @@ class MbRpjmdSasaranController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Data berhasil dihapus');
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak berhasil dihapus');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
+        }
         return $this->redirect(['index']);
+    }
+
+    public function actionDetailindikator()
+    {
+        $id = Yii::$app->request->post('expandRowKey');
+
+        $model = $this->findIndikator($id);
+
+        $searchModel = new MbIndikatorKinerjaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere([
+            'mb_rpjmd_sasaran_id' => $id
+        ]);
+
+        return $this->renderPartial('_detailindikator', [
+            'id' => $id,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    protected function findIndikator($id)
+    {
+        return MbIndikatorKinerja::findOne(['mb_rpjmd_sasaran_id' => $id]);
     }
 
     /**

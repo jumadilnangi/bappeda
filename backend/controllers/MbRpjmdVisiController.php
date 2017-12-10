@@ -9,6 +9,11 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use backend\models\MbRpjmdMisi;
+use backend\models\MbRpjmdMisiSearch;
+
+use backend\models\customs\Visi;
+
 /**
  * MbRpjmdVisiController implements the CRUD actions for MbRpjmdVisi model.
  */
@@ -45,30 +50,31 @@ class MbRpjmdVisiController extends Controller
     }
 
     /**
-     * Displays a single MbRpjmdVisi model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new MbRpjmdVisi model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new MbRpjmdVisi();
+        $model = new Visi();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_rpjmd_visi_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+            }
+            return $this->redirect(['index']);
         } else {
-            return $this->renderAjax('create', [
+            return $this->render('create', [
                 'model' => $model,
             ]);
         }
@@ -84,13 +90,34 @@ class MbRpjmdVisiController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_rpjmd_visi_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+            }
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
+
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->mb_rpjmd_visi_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }*/
     }
 
     /**
@@ -101,9 +128,48 @@ class MbRpjmdVisiController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Data berhasil dihapus');
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak berhasil dihapus');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
+        }
         return $this->redirect(['index']);
+    }
+
+    public function actionDetailmisi()
+    {
+        $id = Yii::$app->request->post('expandRowKey');
+
+        $model = $this->findMisi($id);
+
+        $searchModel = new MbRpjmdMisiSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere([
+            'mb_rpjmd_visi_id' => $id
+        ]);
+
+        return $this->renderPartial('_detailmisi', [
+            'id' => $id,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    protected function findMisi($id)
+    {
+        //if (($model = MbRpjmdMisi::findOne(['mb_rpjmd_visi_id' => $id])) !== null) {
+            return MbRpjmdMisi::findOne(['mb_rpjmd_visi_id' => $id]);
+        //} else {
+        //    throw new NotFoundHttpException('The requested page does not exist.');
+        //}
     }
 
     /**
@@ -115,7 +181,8 @@ class MbRpjmdVisiController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = MbRpjmdVisi::findOne($id)) !== null) {
+        //if (($model = MbRpjmdVisi::findOne($id)) !== null) {
+        if (($model = Visi::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use backend\models\customs\IndikatorKinerja;
 /**
  * MbIndikatorKinerjaController implements the CRUD actions for MbIndikatorKinerja model.
  */
@@ -45,31 +46,33 @@ class MbIndikatorKinerjaController extends Controller
     }
 
     /**
-     * Displays a single MbIndikatorKinerja model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new MbIndikatorKinerja model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_sasaran='')
     {
-        $model = new MbIndikatorKinerja();
+        $model = new IndikatorKinerja();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_indikator_kinerja_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+            }
+            return $this->redirect(['index']);
         } else {
-            return $this->renderAjax('create', [
+            return $this->render('create', [
                 'model' => $model,
+                'id_sasaran' => $id_sasaran
             ]);
         }
     }
@@ -84,8 +87,21 @@ class MbIndikatorKinerjaController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mb_indikator_kinerja_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success','Data berhasil disimpan');
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Rollback transaction. Data tidak bisa disimpan');
+            }
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -101,8 +117,20 @@ class MbIndikatorKinerjaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success','Data berhasil dihapus');
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak berhasil dihapus');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
+        }
         return $this->redirect(['index']);
     }
 
@@ -115,7 +143,7 @@ class MbIndikatorKinerjaController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = MbIndikatorKinerja::findOne($id)) !== null) {
+        if (($model = IndikatorKinerja::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

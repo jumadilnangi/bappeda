@@ -86,10 +86,10 @@ class MbRenjaController extends Controller
                     Yii::$app->session->setFlash('success','Data berhasil disimpan');
                     return $this->redirect(['index']);
                 } else {
-                    echo "<pre>";
-                    print_r($model->getErrors());
-                    echo "</pre>";
-                    exit();
+                    //echo "<pre>";
+                    //print_r($model->getErrors());
+                    //echo "</pre>";
+                    //exit();
                     $transaction->rollBack();
                     Yii::$app->session->setFlash('error','Terjadi kesalahan, Data tidak bisa disimpan');
                     return $this->redirect(['index']);

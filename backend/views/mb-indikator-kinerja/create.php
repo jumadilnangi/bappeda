@@ -9,12 +9,10 @@ use yii\helpers\Html;
 $this->title = 'Tambah Indikator Kinerja';
 $this->params['breadcrumbs'][] = ['label' => 'Data Indikator Kinerja', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo $this->render('_form', [
+	'model' => $model,
+	'id_sasaran' => $id_sasaran
+]);
+
 ?>
-<div class="mb-indikator-kinerja-create">
-
-   
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
