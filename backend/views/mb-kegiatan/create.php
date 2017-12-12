@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo $this->render('_form', [
 	'model' => $model,
+	'modelSkpd' => $modelSkpd,
 ]);
 
 ?>

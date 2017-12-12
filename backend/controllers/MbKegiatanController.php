@@ -8,7 +8,9 @@ use backend\models\MbKegiatanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
+use backend\models\MbSkpd;
 /**
  * MbKegiatanController implements the CRUD actions for MbKegiatan model.
  */
@@ -52,6 +54,7 @@ class MbKegiatanController extends Controller
     public function actionCreate()
     {
         $model = new MbKegiatan();
+        $modelSkpd = new MbSkpd();
 
         if ($model->load(Yii::$app->request->post())) {
             $transaction = Yii::$app->db->beginTransaction();
@@ -71,6 +74,7 @@ class MbKegiatanController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'modelSkpd' => $modelSkpd,
             ]);
         }
     }
@@ -84,6 +88,7 @@ class MbKegiatanController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelSkpd = new MbSkpd();
 
         if ($model->load(Yii::$app->request->post())) {
             $transaction = Yii::$app->db->beginTransaction();
@@ -103,6 +108,7 @@ class MbKegiatanController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelSkpd' => $modelSkpd
             ]);
         }
     }
@@ -130,6 +136,34 @@ class MbKegiatanController extends Controller
             Yii::$app->session->setFlash('error','Rollback transaction, Data tidak berhasil dihapus');
         }
         return $this->redirect(['index']);
+    }
+
+    public function actionSubprogram()
+    {
+        $out = [];
+        if (Yii::$app->request->post('depdrop_parents')) {
+            $parents = Yii::$app->request->post('depdrop_parents');
+            if ($parents != null) {
+                $id = $parents[0];
+                $out = self::getProgram($id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function getProgram($id='')
+    {
+        $queryProgram = Yii::$app->db->createCommand("SELECT prog.mb_program_id AS id,
+                    CONCAT(prog.mb_program_kode,' - ', prog.mb_program_nama) AS name
+                FROM mb_program AS prog
+                JOIN mb_urusan_has_skpd AS hskpd USING(mb_urusan_has_skpd_id)
+                JOIn mb_skpd AS skpd USING(mb_skpd_id)
+                WHERE skpd.mb_skpd_id = :cari")
+            ->bindValue(':cari', $id)
+            ->queryAll();
+        return $queryProgram;
     }
 
     /**
